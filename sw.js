@@ -1,5 +1,5 @@
 // Network-first for the app shell so updates show up, with a cached copy for offline use.
-const CACHE = 'pdia-v3';
+const CACHE = 'pdia-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -23,4 +23,15 @@ self.addEventListener('fetch', e => {
       return res;
     }).catch(() => caches.match(req).then(r => r || (req.mode === 'navigate' ? caches.match('./index.html') : Response.error())))
   );
+});
+
+// Reminders: tapping a notification opens the app on the right page.
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const tab = e.notification.data?.tab || 'tasks';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    const open = list.find(c => 'focus' in c);
+    if (open) { open.postMessage({ type: 'open-tab', tab }); return open.focus(); }
+    return self.clients.openWindow('./');
+  }));
 });
