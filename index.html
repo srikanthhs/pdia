@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1a56db">
+<meta name="theme-color" content="#0f6e7c">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="PDIA">
+<meta name="apple-mobile-web-app-title" content="Problem Lab">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>PDIA Workspace v6 — Harvard Kennedy School · Pro</title>
+<title>Problem Solving Lab</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -73,8 +73,8 @@
 <style>
 :root{
   --ink:#0d1117;--ink2:#24292f;--ink3:#57606a;--ink4:#8c959f;
-  --bg:#f0f2f5;--bg2:#ffffff;--border:#d0d7de;--border2:#e8edf2;
-  --blue:#1a56db;--blue2:#1e40af;--blue-t:#eff6ff;--bglow:rgba(26,86,219,.14);
+  --bg:#f2f4f3;--bg2:#ffffff;--border:#d0d7de;--border2:#e8edf2;
+  --blue:#0f6e7c;--blue2:#0a4f59;--blue-t:#e8f3f4;--bglow:rgba(15,110,124,.16);
   --green:#059669;--green-t:#ecfdf5;
   --amber:#d97706;--amber-t:#fffbeb;
   --red:#dc2626;--red-t:#fff1f2;
@@ -82,7 +82,7 @@
   --teal:#0891b2;--teal-t:#ecfeff;
   --rose:#e11d48;--rose-t:#fff1f5;
   --orange:#ea580c;--orange-t:#fff7ed;
-  --grad:linear-gradient(135deg,#1a56db,#7c3aed);
+  --grad:linear-gradient(135deg,#0f6e7c,#1d8a6f);
   --grad2:linear-gradient(135deg,#059669,#0891b2);
   --grad3:linear-gradient(135deg,#d97706,#dc2626);
   --r:10px;--rl:16px;--rxl:22px;
@@ -453,7 +453,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:10
 /* Interactive table */
 .itbl{width:100%;border-collapse:collapse;font-size:13px}
 .itbl th{background:var(--blue-t);color:var(--blue2);padding:9px 12px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--blue);white-space:nowrap;user-select:none;cursor:pointer}
-.itbl th:hover{background:#dbeafe}
+.itbl th:hover{background:#d3e9ec}
 .itbl th .sort-icon{font-size:11px;margin-left:4px;opacity:.5}
 .itbl th.sorted .sort-icon{opacity:1;color:var(--blue)}
 .itbl td{padding:9px 12px;border-bottom:1px solid var(--border2);vertical-align:middle;transition:background .1s}
@@ -609,7 +609,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .guide-feat-item .ico{font-size:13px;flex-shrink:0;margin-top:1px}
 .guide-callout{border-radius:var(--r);padding:11px 14px;margin-top:10px;display:flex;gap:9px;font-size:12.5px;line-height:1.6}
 .guide-callout.tip{background:var(--green-t);border:1px solid rgba(5,150,105,.2)}
-.guide-callout.note{background:var(--blue-t);border:1px solid rgba(26,86,219,.15)}
+.guide-callout.note{background:var(--blue-t);border:1px solid rgba(15,110,124,.15)}
 .guide-callout.warn{background:var(--amber-t);border:1px solid rgba(217,119,6,.2)}
 .guide-callout .ico{font-size:15px;flex-shrink:0}
 .guide-callout p{color:var(--ink3)}
@@ -620,7 +620,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .guide-tracker-step.done:not(:last-child)::after{background:var(--green)}
 .guide-tracker-dot{width:26px;height:26px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;z-index:1;margin-bottom:4px}
 .guide-tracker-step.done .guide-tracker-dot{background:var(--green-t);border-color:var(--green)}
-.guide-tracker-step.active .guide-tracker-dot{background:var(--blue-t);border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
+.guide-tracker-step.active .guide-tracker-dot{background:var(--blue-t);border-color:var(--blue);box-shadow:0 0 0 3px rgba(15,110,124,.1)}
 .guide-tracker-lbl{font-size:9px;font-weight:600;color:var(--ink4);text-align:center}
 .guide-tracker-step.done .guide-tracker-lbl{color:var(--green)}
 .guide-tracker-step.active .guide-tracker-lbl{color:var(--blue)}
@@ -635,6 +635,114 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 
 
 
+
+/* ── METHODS: approach, system, leverage, library ── */
+.lead{font-size:13px;color:var(--ink3);margin:-4px 0 14px;max-width:70ch}
+.muted{font-size:12px;color:var(--ink4)}
+.link-btn{border:none;background:none;color:var(--blue);font-family:var(--font);font-weight:700;font-size:12.5px;cursor:pointer;padding:0}
+.link-btn:hover{text-decoration:underline}
+.tip-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3);padding:4px 4px 16px;flex-wrap:wrap}
+.tip-row .material-icons-round{font-size:18px;color:var(--ink4)}
+.row-input{display:flex;gap:8px}
+.row-input .fi,.row-input .fs{flex:1;min-width:0}
+.row-input.wrap{flex-wrap:wrap}
+.cy-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--border2);border-radius:var(--rl);overflow:hidden;margin-bottom:14px}
+.cy-cell{display:flex;flex-direction:column;gap:4px;text-align:left;border:none;background:var(--bg2);padding:16px;cursor:pointer;font-family:var(--font);transition:var(--anim);min-height:120px}
+.cy-cell:hover{background:var(--bg)}
+.cy-cell.active{background:var(--blue-t);box-shadow:inset 0 0 0 2px var(--blue)}
+.cy-name{font-family:var(--display);font-size:20px;color:var(--ink)}
+.cy-rule{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.3px;text-transform:uppercase}
+.cy-desc{font-size:12.5px;color:var(--ink3);line-height:1.5}
+.cy-advice:empty{display:none}
+.cy-advice{background:var(--blue-t);border-radius:var(--r);padding:14px 16px}
+.cy-advice-t{font-weight:700;color:var(--blue2);font-size:13.5px}
+.cy-advice p{font-size:13px;color:var(--ink2);margin:4px 0 10px;max-width:70ch}
+.cy-methods{display:flex;gap:6px;flex-wrap:wrap}
+.cy-methods .chip{border:none;cursor:pointer;font-family:var(--font)}
+.cy-q{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.cy-q label{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink2);cursor:pointer}
+.cy-q input{margin-top:3px;width:16px;height:16px;flex-shrink:0;accent-color:var(--blue)}
+.iceberg{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:14px}
+.ice-level{width:100%;display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:var(--r)}
+.ice-level .ft{min-height:60px}
+.ice-lbl b{display:block;font-size:13px}
+.ice-lbl span{font-size:11.5px;color:var(--ink3)}
+.ice-1{max-width:62%;background:#eef7f8;border:1px solid #cfe7ea}
+.ice-2{max-width:78%;background:#d9eef1}
+.ice-3{max-width:90%;background:#bfe1e6}
+.ice-4{max-width:100%;background:#a3d3da}
+.ice-water{width:100%;border-top:2px dashed var(--teal);text-align:center;margin:2px 0}
+.ice-water span{position:relative;top:-9px;background:var(--bg2);padding:0 8px;font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.5px;text-transform:uppercase}
+.cld-forms{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:14px}
+.cld-form{background:var(--bg);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cld-delay{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--ink3);margin:4px 0}
+.cld-form .btn{align-self:flex-start}
+.cld-wrap{overflow-x:auto;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg);margin-bottom:14px}
+#cld-svg{display:block;width:100%;min-width:520px;height:auto}
+.cld-node{fill:var(--bg2);stroke:var(--ink3);stroke-width:1.2}
+.cld-label{font:600 11.5px var(--font);fill:var(--ink)}
+.cld-edge{fill:none;stroke-width:1.6}
+.cld-edge.pos{stroke:var(--teal)}
+.cld-edge.neg{stroke:var(--rose)}
+.cld-arrow{fill:var(--ink3)}
+.cld-signbg{fill:var(--bg2);stroke:var(--border)}
+.cld-sign{font:800 13px var(--font)}
+.cld-sign.pos{fill:var(--teal)}
+.cld-sign.neg{fill:var(--rose)}
+.cld-delaymark{stroke:var(--ink2);stroke-width:2}
+.cld-empty{font:500 13px var(--font);fill:var(--ink4)}
+.loop-mark{fill:var(--bg2);stroke-width:2}
+.loop-mark.R{stroke:var(--amber)}
+.loop-mark.B{stroke:var(--green)}
+.loop-mark-t{font:800 11px var(--font);fill:var(--ink)}
+.cld-lists{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.cld-lists>div{min-width:0}
+.loop-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border2)}
+.loop-badge{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:2px solid}
+.loop-badge.R{border-color:var(--amber);color:var(--amber)}
+.loop-badge.B{border-color:var(--green);color:var(--green)}
+.loop-path{font-size:13px;font-weight:600;overflow-wrap:anywhere}
+.loop-kind{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.var-chip{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--border2);border-radius:100px;padding:3px 4px 3px 10px;font-size:12px;margin:6px 6px 0 0}
+.var-chip button{border:none;background:none;cursor:pointer;color:var(--ink4);font-size:15px;line-height:1;padding:0 4px}
+.link-list{margin-top:10px}
+.link-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--border2)}
+.link-row b.pos{color:var(--teal)}.link-row b.neg{color:var(--rose)}
+.lev-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.lev-ladder{display:flex;flex-direction:column;gap:3px}
+.lev-rung{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;background:var(--bg);border-left:4px solid var(--g);font-size:12.5px;color:var(--ink3)}
+.lev-rung.has{background:var(--bg2);box-shadow:var(--sh);color:var(--ink);font-weight:600}
+.lev-n{width:22px;height:22px;border-radius:50%;background:var(--g);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0;font-variant-numeric:tabular-nums}
+.lev-n.big{width:30px;height:30px;font-size:13px}
+.lev-name{flex:1}
+.lev-c{font-size:10px;font-weight:800;background:var(--ink);color:var(--bg2);border-radius:100px;padding:1px 7px}
+.lev-axis{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.lev-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border2);border-left:4px solid var(--g);border-radius:var(--r);margin-bottom:8px}
+.lev-item-t{font-weight:700;font-size:13.5px;overflow-wrap:anywhere}
+.lev-item-m{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.lev-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.m-fam{font-size:11px;font-weight:800;color:var(--ink4);text-transform:uppercase;letter-spacing:.7px;margin:16px 0 8px}
+.m-fam:first-child{margin-top:0}
+.m-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.m-card{border:1px solid var(--border2);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:4px;background:var(--bg2)}
+.m-card.rec{border-color:var(--green);background:var(--green-t)}
+.m-name{font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.m-origin{font-size:11px;color:var(--ink4)}
+.m-when{font-size:12.5px;color:var(--ink2);flex:1;margin:4px 0 6px}
+.m-card .link-btn{align-self:flex-start}
+.iter-sci{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.iter-sci>div{background:var(--blue-t);border-radius:8px;padding:8px 10px}
+@media(max-width:760px){
+  .cld-forms,.cld-lists,.lev-layout{grid-template-columns:1fr}
+  .ice-level{grid-template-columns:1fr;gap:6px}
+  .ice-1,.ice-2,.ice-3{max-width:100%}
+  .iter-sci{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .cy-cell{min-height:0;padding:12px}
+  .cy-name{font-size:17px}
+  .lev-item{flex-wrap:wrap}
+}
 
 /* ── SIGN-IN ── */
 .signin-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px max(16px,env(safe-area-inset-left)) 24px max(16px,env(safe-area-inset-right))}
@@ -692,7 +800,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 @media(max-width:600px){
   .wf-bar{padding:12px;margin-bottom:12px;border-radius:var(--r)}
   .wf-steps{gap:0}
-  .wf-steps li{min-width:46px}
+  .wf-steps li{min-width:41px}
   .wf-lbl{font-size:9.5px}
   .wf-count{display:none}
   .case-row{flex-wrap:wrap}
@@ -748,7 +856,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <div class="signin-screen" id="signin-screen" hidden>
   <div class="signin-card">
     <div class="logo-mark" style="width:48px;height:48px;font-size:24px;border-radius:14px"><span class="material-icons-round" style="font-size:26px">psychology_alt</span></div>
-    <h1 class="signin-title">PDIA Workspace</h1>
+    <h1 class="signin-title">Problem Solving Lab</h1>
     <p class="signin-sub">Sign in to keep your cases private and in sync on your phone and computer.</p>
     <button class="btn btn-p signin-google" onclick="window.__signIn()"><span class="material-icons-round">login</span>Sign in with Google</button>
     <button class="btn btn-g" onclick="window.__useDevice()">Continue without an account</button>
@@ -760,7 +868,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <button class="mobile-nav-btn" onclick="toggleMobileNav()" aria-label="Open navigation"><span class="material-icons-round">menu</span></button>
   <div class="logo">
     <div class="logo-mark"><span class="material-icons-round" style="font-size:17px">psychology_alt</span></div>
-    <div><div>PDIA Workspace</div><div class="logo-hks">HARVARD KENNEDY SCHOOL · V6 PRO</div></div>
+    <div><div>Problem Solving Lab</div><div class="logo-hks">SYSTEMS THINKING · PDIA · SCIENTIFIC METHOD</div></div>
   </div>
   <div class="appbar-sp"></div>
   <button class="account-btn" id="account-btn" aria-label="Account"></button>
@@ -813,16 +921,19 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <button class="case-card" onclick="openCases()"><span class="material-icons-round">folder_open</span><span style="min-width:0;flex:1;text-align:left"><span class="case-card-name" data-case-name>My first case</span><span class="case-card-meta" data-case-meta>Active</span></span><span class="material-icons-round" style="font-size:18px">unfold_more</span></button>
   <button class="nav-item active" onclick="nav('dashboard')" data-nav="dashboard"><span class="material-icons-round">dashboard</span>Dashboard</button>
 
-  <div class="nav-section" style="margin-top:6px">PDIA steps</div>
+  <div class="nav-section" style="margin-top:6px">Problem-solving steps</div>
   <button class="nav-item" onclick="nav('problem')" data-nav="problem"><span class="step-badge" data-step-badge="problem"></span><span style="flex:1">Define the problem</span></button>
+  <button class="nav-item" onclick="nav('approach')" data-nav="approach"><span class="step-badge" data-step-badge="approach"></span><span style="flex:1">Choose your approach</span></button>
+  <button class="nav-item" onclick="nav('system')" data-nav="system"><span class="step-badge" data-step-badge="system"></span><span style="flex:1">See the system</span></button>
   <button class="nav-item" onclick="nav('causes')" data-nav="causes"><span class="step-badge" data-step-badge="causes"></span><span style="flex:1">Find root causes</span></button>
-  <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="step-badge" data-step-badge="authority"></span><span style="flex:1">Map who can help</span></button>
-  <button class="nav-item" onclick="nav('iterations')" data-nav="iterations"><span class="step-badge" data-step-badge="iterations"></span><span style="flex:1">Try a small action</span></button>
-  <button class="nav-item" onclick="nav('tasks')" data-nav="tasks"><span class="step-badge" data-step-badge="tasks"></span><span style="flex:1">Assign tasks</span> <span class="nav-count" id="nc-tasks">0</span></button>
-  <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="step-badge" data-step-badge="followups"></span><span style="flex:1">Follow up</span> <span class="nav-count warn" id="nc-fu">0</span></button>
-  <button class="nav-item" onclick="nav('report')" data-nav="report"><span class="step-badge" data-step-badge="report"></span><span style="flex:1">Report progress</span></button>
+  <button class="nav-item" onclick="nav('leverage')" data-nav="leverage"><span class="step-badge" data-step-badge="leverage"></span><span style="flex:1">Pick leverage points</span></button>
+  <button class="nav-item" onclick="nav('iterations')" data-nav="iterations"><span class="step-badge" data-step-badge="iterations"></span><span style="flex:1">Run experiments</span></button>
+  <button class="nav-item" onclick="nav('tasks')" data-nav="tasks"><span class="step-badge" data-step-badge="tasks"></span><span style="flex:1">Act and follow up</span> <span class="nav-count" id="nc-tasks">0</span></button>
+  <button class="nav-item" onclick="nav('report')" data-nav="report"><span class="step-badge" data-step-badge="report"></span><span style="flex:1">Learn and report</span></button>
 
-  <div class="nav-section" style="margin-top:6px">Review &amp; plan</div>
+  <div class="nav-section" style="margin-top:6px">More tools</div>
+  <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="material-icons-round">groups</span>Map who can help</button>
+  <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="material-icons-round">event_repeat</span>Follow-ups <span class="nav-count warn" id="nc-fu">0</span></button>
   <button class="nav-item" onclick="nav('review')" data-nav="review"><span class="material-icons-round">rate_review</span>Weekly review</button>
   <button class="nav-item" onclick="nav('goals')" data-nav="goals"><span class="material-icons-round">track_changes</span>Goals</button>
   <button class="nav-item" onclick="nav('frameworks')" data-nav="frameworks"><span class="material-icons-round">science</span>OKR · ToC · OGSM</button>
@@ -830,6 +941,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <button class="nav-item" onclick="nav('matrix')" data-nav="matrix"><span class="material-icons-round">grid_view</span>Eisenhower matrix</button>
 
   <div class="nav-section" style="margin-top:6px">Help</div>
+  <button class="nav-item" onclick="nav('methods')" data-nav="methods"><span class="material-icons-round">menu_book</span>Methods library</button>
   <button class="nav-item" onclick="nav('coach')" data-nav="coach"><span class="material-icons-round">smart_toy</span>AI coach</button>
   <button class="nav-item" onclick="nav('notes')" data-nav="notes"><span class="material-icons-round">sticky_note_2</span>Notes</button>
   <button class="nav-item" onclick="nav('guide')" data-nav="guide"><span class="material-icons-round">school</span>Guide &amp; walkthrough</button>
@@ -845,7 +957,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <!-- PDIA Journey Progress Bar -->
   <div class="card" style="padding:18px 22px;margin-bottom:14px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div><div style="font-size:13px;font-weight:700;letter-spacing:-.2px">PDIA Progress Journey</div><div style="font-size:11px;color:var(--ink4);margin-top:1px">Track completion across all framework stages</div></div>
+      <div><div style="font-size:13px;font-weight:700;letter-spacing:-.2px">Progress journey</div><div style="font-size:11px;color:var(--ink4);margin-top:1px">Track completion across all framework stages</div></div>
       <div id="health-ring-wrap" class="ring-wrap"><svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="var(--border2)" stroke-width="5"/><circle cx="28" cy="28" r="22" fill="none" stroke="var(--blue)" stroke-width="5" stroke-dasharray="138.2" stroke-dashoffset="138.2" id="health-ring-path" style="transition:stroke-dashoffset .8s ease"/></svg><div class="ring-val" id="health-ring-val">0%</div></div>
     </div>
     <div class="pdia-journey" id="pdia-journey">
@@ -864,7 +976,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <div class="hero">
     <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:3px 12px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;letter-spacing:.3px"><span class="material-icons-round" style="font-size:13px">school</span>SAMPLE CASE LOADED · Urban Water Access Crisis</div>
     <div class="hero-eyebrow">Problem-Driven Iterative Adaptation</div>
-    <div class="hero-title" id="hero-title">Welcome to PDIA Workspace</div>
+    <div class="hero-title" id="hero-title">Welcome to Problem Solving Lab</div>
     <div class="hero-sub" id="hero-sub">Define your problem statement to begin. Navigate using the sidebar.</div>
     <div class="hero-chips" id="hero-chips"></div>
     <button class="btn" onclick="nav('problem')" style="margin-top:14px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;padding:7px 16px;backdrop-filter:blur(8px)"><span class="material-icons-round" style="font-size:14px">edit</span>Edit Problem Statement</button>
@@ -996,11 +1108,6 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <!-- ════════ PROBLEM ════════ -->
 <div class="panel" id="tab-problem">
 
-  <!-- PDIA Step Indicator -->
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 16px;background:var(--blue-t);border-radius:var(--r);border-left:4px solid var(--blue)">
-    <span class="material-icons-round" style="color:var(--blue)">looks_one</span>
-    <div><div style="font-size:13px;font-weight:700;color:var(--blue2)">PDIA Step 1 — Define the Problem</div><div style="font-size:11.5px;color:var(--ink3);margin-top:1px">In PDIA, naming the problem precisely is the hardest and most important step. Resist jumping to solutions.</div></div>
-  </div>
 
   <!-- Problem Canvas -->
   <div class="prob-canvas">
@@ -1062,12 +1169,103 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 
 
 <!-- ════════ CAUSES ════════ -->
-<div class="panel" id="tab-causes">
-  <!-- Step indicator -->
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 16px;background:var(--amber-t);border-radius:var(--r);border-left:4px solid var(--amber)">
-    <span class="material-icons-round" style="color:var(--amber)">looks_two</span>
-    <div><div style="font-size:13px;font-weight:700;color:var(--amber)">PDIA Step 2 — Analyse Root Causes</div><div style="font-size:11.5px;color:var(--ink3);margin-top:1px">Resist the urge to solve. First understand deeply WHY the problem exists. Use multiple tools.</div></div>
+<div class="panel" id="tab-approach">
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--blue)">explore</span>Choose your approach<span class="card-sub">Cynefin framework · Snowden &amp; Boone, 2007</span></div>
+    <p class="lead">Different problems need different methods. Pick the situation that best describes your problem, or answer the four questions below and the app will suggest one.</p>
+    <div class="cy-grid" id="cy-grid">
+      <button class="cy-cell" data-domain="complex" onclick="setDomain('complex')"><span class="cy-name">Complex</span><span class="cy-rule">Probe → Sense → Respond</span><span class="cy-desc">Many interacting causes. Nobody knows the answer in advance; it emerges from trying things.</span></button>
+      <button class="cy-cell" data-domain="complicated" onclick="setDomain('complicated')"><span class="cy-name">Complicated</span><span class="cy-rule">Sense → Analyse → Respond</span><span class="cy-desc">Cause and effect exist but take expertise and analysis to find.</span></button>
+      <button class="cy-cell" data-domain="chaotic" onclick="setDomain('chaotic')"><span class="cy-name">Chaotic</span><span class="cy-rule">Act → Sense → Respond</span><span class="cy-desc">A crisis. No time to analyse; stabilise the situation first.</span></button>
+      <button class="cy-cell" data-domain="clear" onclick="setDomain('clear')"><span class="cy-name">Clear</span><span class="cy-rule">Sense → Categorise → Respond</span><span class="cy-desc">Cause and effect are obvious to everyone. Apply the known best practice.</span></button>
+    </div>
+    <div id="cy-advice" class="cy-advice"></div>
   </div>
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--teal)">quiz</span>Not sure? Answer four questions</div>
+    <div class="cy-q">
+      <label><input type="checkbox" id="cyq-crisis"> There is an urgent crisis that needs action today.</label>
+      <label><input type="checkbox" id="cyq-obvious"> Everyone agrees on the cause and the fix.</label>
+      <label><input type="checkbox" id="cyq-experts"> Experts could work out the answer with enough data and analysis.</label>
+      <label><input type="checkbox" id="cyq-shifting"> The situation keeps changing, and past fixes had unexpected side effects.</label>
+    </div>
+    <button class="btn btn-p" onclick="suggestDomain()"><span class="material-icons-round">auto_awesome</span>Suggest an approach</button>
+  </div>
+</div>
+
+<div class="panel" id="tab-system">
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--teal)">waves</span>Iceberg model<span class="card-sub">Systems thinking · Senge; Meadows</span></div>
+    <p class="lead">What you see is only the tip. Work downwards: the deeper the level you change, the longer the fix lasts.</p>
+    <div class="iceberg">
+      <div class="ice-level ice-1"><div class="ice-lbl"><b>Events</b><span>What happened? What do people notice?</span></div><textarea id="ice-events" class="ft" placeholder="e.g., 18 students absent on Monday in Grade 7"></textarea></div>
+      <div class="ice-water"><span>water line · below here is usually invisible</span></div>
+      <div class="ice-level ice-2"><div class="ice-lbl"><b>Patterns</b><span>What keeps repeating? What trend over time?</span></div><textarea id="ice-patterns" class="ft" placeholder="e.g., Absence rises every harvest season and after festivals"></textarea></div>
+      <div class="ice-level ice-3"><div class="ice-lbl"><b>Structures</b><span>Which rules, incentives, resources or relationships produce the pattern?</span></div><textarea id="ice-structures" class="ft" placeholder="e.g., Families need children for farm work; no bus on the main route"></textarea></div>
+      <div class="ice-level ice-4"><div class="ice-lbl"><b>Mental models</b><span>Which beliefs and assumptions keep the structures in place?</span></div><textarea id="ice-models" class="ft" placeholder="e.g., &quot;School is less useful than earning now&quot;"></textarea></div>
+    </div>
+    <button class="btn btn-p" onclick="saveIceberg()"><span class="material-icons-round">save</span>Save iceberg</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--purple)">all_inclusive</span>Causal loop diagram<span class="card-sub">System dynamics · Forrester; Sterman</span></div>
+    <p class="lead">List the things that change (variables), then say how each one pushes another. <b>+</b> means they move in the same direction, <b>−</b> means opposite directions. The app finds the feedback loops for you.</p>
+    <div class="cld-forms">
+      <div class="cld-form">
+        <label class="fl" for="cld-var">Add a variable</label>
+        <div class="row-input"><input id="cld-var" class="fi" placeholder="e.g., Student attendance" onkeydown="if(event.key==='Enter')addCldVar()"><button class="btn btn-p" onclick="addCldVar()"><span class="material-icons-round">add</span>Add</button></div>
+        <button class="btn btn-g btn-sm" style="margin-top:8px" onclick="importCausesToCld()"><span class="material-icons-round">download</span>Use my root causes as variables</button>
+      </div>
+      <div class="cld-form">
+        <label class="fl">Add a link</label>
+        <div class="row-input wrap">
+          <select id="cld-from" class="fs"></select>
+          <select id="cld-sign" class="fs" style="flex:0 0 auto;width:auto"><option value="+">+ increases</option><option value="-">− decreases</option></select>
+          <select id="cld-to" class="fs"></select>
+        </div>
+        <label class="cld-delay"><input type="checkbox" id="cld-delay"> There is a delay before the effect shows</label>
+        <button class="btn btn-p" onclick="addCldLink()"><span class="material-icons-round">trending_flat</span>Add link</button>
+      </div>
+    </div>
+    <div class="cld-wrap"><svg id="cld-svg" viewBox="0 0 640 420" role="img" aria-label="Causal loop diagram"></svg></div>
+    <div class="cld-lists">
+      <div><div class="fl">Feedback loops found</div><div id="cld-loops"></div></div>
+      <div><div class="fl">Variables and links</div><div id="cld-items"></div></div>
+    </div>
+  </div>
+  <div class="tip-row"><span class="material-icons-round">groups</span>Also map the people in the system: <button class="link-btn" onclick="nav('authority')">Map who can help</button></div>
+</div>
+
+<div class="panel" id="tab-leverage">
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--green)">architecture</span>Leverage points<span class="card-sub">Donella Meadows, 1999</span></div>
+    <p class="lead">Places to intervene in a system, from weakest (12) to strongest (1). Most fixes adjust numbers; the lasting ones change feedback, rules, goals or mindsets. List a few possible actions and see where they sit.</p>
+    <div class="lev-layout">
+      <div class="lev-ladder" id="lev-ladder"></div>
+      <div>
+        <div class="fr"><label class="fl" for="lev-title">Possible action</label><input id="lev-title" class="fi" placeholder="e.g., Run a school bus on the harvest-season route"></div>
+        <div class="fr"><label class="fl" for="lev-level">Leverage point</label><select id="lev-level" class="fs"></select></div>
+        <div class="fr"><label class="fl" for="lev-target">Which cause or loop does it act on?</label><input id="lev-target" class="fi" placeholder="e.g., R1 dropout loop, or 'no transport'"></div>
+        <div class="fr"><label class="fl" for="lev-effort">Effort</label><select id="lev-effort" class="fs"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
+        <button class="btn btn-p" onclick="saveLeverage()"><span class="material-icons-round">add</span>Add action</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--green)">format_list_numbered</span>Your actions, strongest leverage first</div>
+    <div id="lev-list"></div>
+  </div>
+</div>
+
+<div class="panel" id="tab-methods">
+  <div class="card">
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--blue)">menu_book</span>Methods library</div>
+    <p class="lead">The scientific methods behind each step, when to use them and where to find them in the app. Methods that suit your case's approach are marked.</p>
+    <div id="methods-list"></div>
+  </div>
+</div>
+
+<div class="panel" id="tab-causes">
 
   <!-- Tab pills for sub-views -->
   <div class="tab-pills" id="causes-tabs">
@@ -1162,17 +1360,12 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <div class="card">
     <div class="card-title"><span class="material-icons-round ico" style="color:var(--blue)">sync</span>PDCA Cycle<span class="card-sub">Deming / Shewhart</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div style="padding:16px;background:var(--blue-t);border-radius:var(--r)"><h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue2);margin-bottom:8px;display:flex;align-items:center;gap:5px"><span class="material-icons-round" style="font-size:14px">edit_note</span>PLAN</h4><textarea id="pdca-plan" class="ft" style="background:rgba(255,255,255,.65);border-color:rgba(26,86,219,.2);min-height:90px" placeholder="Hypothesis? What change will improve the situation?"></textarea></div>
+      <div style="padding:16px;background:var(--blue-t);border-radius:var(--r)"><h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue2);margin-bottom:8px;display:flex;align-items:center;gap:5px"><span class="material-icons-round" style="font-size:14px">edit_note</span>PLAN</h4><textarea id="pdca-plan" class="ft" style="background:rgba(255,255,255,.65);border-color:rgba(15,110,124,.2);min-height:90px" placeholder="Hypothesis? What change will improve the situation?"></textarea></div>
       <div style="padding:16px;background:var(--green-t);border-radius:var(--r)"><h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-bottom:8px;display:flex;align-items:center;gap:5px"><span class="material-icons-round" style="font-size:14px">play_circle</span>DO</h4><textarea id="pdca-do" class="ft" style="background:rgba(255,255,255,.65);border-color:rgba(5,150,105,.2);min-height:90px" placeholder="What action? Who, what, when?"></textarea></div>
       <div style="padding:16px;background:var(--amber-t);border-radius:var(--r)"><h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:5px"><span class="material-icons-round" style="font-size:14px">analytics</span>CHECK</h4><textarea id="pdca-check" class="ft" style="background:rgba(255,255,255,.65);border-color:rgba(217,119,6,.2);min-height:90px" placeholder="What data? Matches hypothesis?"></textarea></div>
       <div style="padding:16px;background:var(--purple-t);border-radius:var(--r)"><h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--purple);margin-bottom:8px;display:flex;align-items:center;gap:5px"><span class="material-icons-round" style="font-size:14px">update</span>ACT</h4><textarea id="pdca-act" class="ft" style="background:rgba(255,255,255,.65);border-color:rgba(124,58,237,.2);min-height:90px" placeholder="Scale, pivot, or abandon?"></textarea></div>
     </div>
     <div style="margin-top:10px;display:flex;gap:7px"><button class="btn btn-p" onclick="savePdca()"><span class="material-icons-round">save</span>Save PDCA</button><button class="btn btn-g" onclick="loadPdca()"><span class="material-icons-round">refresh</span>Reload</button></div>
-  </div>
-  <!-- Step indicator -->
-  <div style="display:flex;align-items:center;gap:10px;margin-top:16px;margin-bottom:16px;padding:10px 16px;background:var(--green-t);border-radius:var(--r);border-left:4px solid var(--green)">
-    <span class="material-icons-round" style="color:var(--green)">looks_3</span>
-    <div><div style="font-size:13px;font-weight:700;color:var(--green)">PDIA Step 3 — Iterate: Do · Learn · Adapt</div><div style="font-size:11.5px;color:var(--ink3);margin-top:1px">Small experiments → honest learning → adaptation. Each iteration builds knowledge you cannot get from planning.</div></div>
   </div>
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -1826,7 +2019,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
             <div class="guide-step-n">01</div>
             <div class="guide-step-c">
               <div class="guide-step-title">PDIA Journey Bar &amp; Health Ring <span class="chip cb">Top of Dashboard</span></div>
-              <div class="guide-step-body">The top element is the <strong>PDIA Progress Journey</strong> — a horizontal strip of 6 clickable stage dots (Problem → Root Causes → Iterations → Goals → OKRs → Authority) with a circular <strong>Health Ring</strong> in the top-right showing your overall completion % (e.g. <code>42%</code>). Click any stage dot to jump directly to that section. The ring animates from 0 → your score on load. Each step with data turns green, making it easy to see what's still empty.</div>
+              <div class="guide-step-body">The top element is the <strong>Progress journey</strong> — a horizontal strip of 6 clickable stage dots (Problem → Root Causes → Iterations → Goals → OKRs → Authority) with a circular <strong>Health Ring</strong> in the top-right showing your overall completion % (e.g. <code>42%</code>). Click any stage dot to jump directly to that section. The ring animates from 0 → your score on load. Each step with data turns green, making it easy to see what's still empty.</div>
             </div>
           </div>
           <div class="guide-step" style="--step-color:var(--blue)">
@@ -2158,8 +2351,11 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 </div></div>
 
 <div class="mo" id="m-iter"><div class="modal">
-  <div class="modal-title">New Iteration</div>
+  <div class="modal-title">New experiment</div>
+  <p style="font-size:12px;color:var(--ink3);margin:-8px 0 12px">Treat each action as a test: state what you expect, try it small, then compare the result with your prediction (scientific method, PDIA and PDCA).</p>
   <div class="fr"><label class="fl">Title *</label><input id="i-title" class="fi" placeholder="e.g., Pilot reading sessions in 3 schools"/></div>
+  <div class="fr"><label class="fl" for="i-hyp">Hypothesis</label><textarea id="i-hyp" class="ft" placeholder="If we … then … because …"></textarea></div>
+  <div class="fr"><label class="fl" for="i-pred">Prediction and how you will measure it</label><input id="i-pred" class="fi" placeholder="e.g., Attendance in pilot schools rises from 72% to 80% in 4 weeks"/></div>
   <div class="fr"><label class="fl">What We Did</label><textarea id="i-did" class="ft" placeholder="Describe the experiment…"></textarea></div>
   <div class="fr"><label class="fl">What We Learned</label><textarea id="i-learned" class="ft" placeholder="What surprised you?"></textarea></div>
   <div class="fr"><label class="fl">How We Will Adapt</label><textarea id="i-adapt" class="ft" placeholder="Scale, pivot, or abandon?"></textarea></div>
@@ -2259,7 +2455,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
     <div style="display:flex;gap:8px;margin-top:4px">
       <div class="nc active" id="nc-#fef9c3" style="background:#fef9c3;border-color:var(--ink)" onclick="selectNoteColor('#fef9c3')"></div>
       <div class="nc" id="nc-#dcfce7" style="background:#dcfce7" onclick="selectNoteColor('#dcfce7')"></div>
-      <div class="nc" id="nc-#dbeafe" style="background:#dbeafe" onclick="selectNoteColor('#dbeafe')"></div>
+      <div class="nc" id="nc-#d3e9ec" style="background:#d3e9ec" onclick="selectNoteColor('#d3e9ec')"></div>
       <div class="nc" id="nc-#fce7f3" style="background:#fce7f3" onclick="selectNoteColor('#fce7f3')"></div>
       <div class="nc" id="nc-#ffedd5" style="background:#ffedd5" onclick="selectNoteColor('#ffedd5')"></div>
       <div class="nc" id="nc-#f3f4f6" style="background:#f3f4f6" onclick="selectNoteColor('#f3f4f6')"></div>
@@ -2278,7 +2474,8 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 const S={
   problem:null,smart:null,causes:[],iterations:[],okrs:[],ogsm:[],toc:[],
   logicModel:null,pdca:{},bsc:{fin:[],cus:[],pro:[],lea:[]},swot:{s:[],w:[],o:[],t:[]},
-  whys:[],auth:[],tasks:[],goals:[],followups:[],notes:[],eisenhower:{q1:[],q2:[],q3:[],q4:[]}
+  whys:[],auth:[],tasks:[],goals:[],followups:[],notes:[],eisenhower:{q1:[],q2:[],q3:[],q4:[]},
+  cynefin:null,iceberg:null,cld:{vars:[],links:[]},leverage:[]
 };
 let _selNoteColor='#fef9c3';
 let _taskView='kanban',_taskFilter='all',_fuFilter='all',_wizStep=0;
@@ -2393,7 +2590,203 @@ async function loadAll(){
   S.followups=await DB.getAll('followups');renderFollowups();
   S.notes=await DB.getAll('notes');renderNotes();
   S.eisenhower=await DB.getSingle('eisenhower')||{q1:[],q2:[],q3:[],q4:[]};renderEisenhower();
+  S.cynefin=await DB.getSingle('cynefin');renderApproach();
+  S.iceberg=await DB.getSingle('iceberg');renderIceberg();
+  const cld=await DB.getSingle('cld');S.cld={vars:cld?.vars||[],links:cld?.links||[]};renderCld();
+  S.leverage=await DB.getAll('leverage');renderLeverage();
+  renderMethods();
   updateStats();updateDashActivity();populateTaskIterLinks();
+}
+
+// ═══════════════════════════════════════════════════════
+// APPROACH — Cynefin
+// ═══════════════════════════════════════════════════════
+const DOMAINS={
+  clear:{name:'Clear',rule:'Sense → Categorise → Respond',advice:'Apply the known best practice. Write it down as a checklist of tasks and move straight to action. Check results with a quick Plan-Do-Check-Act cycle.',methods:['pdca','tasks','eisenhower']},
+  complicated:{name:'Complicated',rule:'Sense → Analyse → Respond',advice:'Gather evidence and bring in experts. Analyse root causes carefully before choosing a fix, then plan the work.',methods:['fishbone','whys','logic','bsc','scientific']},
+  complex:{name:'Complex',rule:'Probe → Sense → Respond',advice:'Nobody can predict the answer, so map the system, then run small, safe-to-fail experiments and amplify what works. This is where PDIA fits best.',methods:['iceberg','cld','leverage','pdia','scientific','authority']},
+  chaotic:{name:'Chaotic',rule:'Act → Sense → Respond',advice:'Stabilise first. Take immediate action on the most urgent items, communicate clearly, then reassess. Once things are calmer, the problem usually becomes complex.',methods:['eisenhower','tasks','followups']}
+};
+function renderApproach(){
+  const d=S.cynefin?.domain;
+  document.querySelectorAll('.cy-cell').forEach(c=>c.classList.toggle('active',c.dataset.domain===d));
+  const el=document.getElementById('cy-advice');if(!el)return;
+  if(!d){el.innerHTML='';return;}
+  const D=DOMAINS[d];
+  el.innerHTML=`<div class="cy-advice-t">Your approach: ${D.name} · ${D.rule}</div><p>${D.advice}</p>
+    <div class="cy-methods">${D.methods.map(id=>{const m=METHODS.find(x=>x.id===id);return m?`<button class="chip cb" onclick="nav('${m.tab}')">${e(m.name)}</button>`:''}).join('')}</div>`;
+}
+async function setDomain(domain){
+  S.cynefin={...(S.cynefin||{}),domain};
+  await DB.set('cynefin',S.cynefin);renderApproach();renderMethods();updateStats();
+  toast('✅ Approach set: '+DOMAINS[domain].name);
+}
+function suggestDomain(){
+  const q=id=>document.getElementById(id)?.checked;
+  const d=q('cyq-crisis')?'chaotic':q('cyq-obvious')?'clear':q('cyq-shifting')?'complex':q('cyq-experts')?'complicated':'complex';
+  setDomain(d);
+}
+
+// ═══════════════════════════════════════════════════════
+// SYSTEM — Iceberg + causal loop diagram
+// ═══════════════════════════════════════════════════════
+function renderIceberg(){const i=S.iceberg||{};sv('ice-events',i.events);sv('ice-patterns',i.patterns);sv('ice-structures',i.structures);sv('ice-models',i.models);}
+async function saveIceberg(quiet=false){
+  S.iceberg={events:v('ice-events'),patterns:v('ice-patterns'),structures:v('ice-structures'),models:v('ice-models')};
+  await DB.set('iceberg',S.iceberg);updateStats();
+  if(quiet)setAutosaveState('Iceberg saved');else toast('✅ Iceberg saved');
+}
+const cldId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+async function saveCld(){await DB.set('cld',S.cld);renderCld();updateStats();}
+async function addCldVar(name){
+  name=(name??v('cld-var')).trim();if(!name){toast('⚠️ Type a variable, for example "Student attendance"');return;}
+  if(S.cld.vars.some(x=>x.name.toLowerCase()===name.toLowerCase())){toast('That variable is already on the map');return;}
+  S.cld.vars.push({id:cldId(),name});sv('cld-var','');await saveCld();
+}
+async function importCausesToCld(){
+  const names=S.causes.map(c=>c.text).filter(Boolean);
+  if(!names.length){toast('Add root causes first, in Step 4');return;}
+  let n=0;for(const name of names){const t=name.length>40?name.slice(0,38)+'…':name;if(!S.cld.vars.some(x=>x.name===t)){S.cld.vars.push({id:cldId(),name:t});n++;}}
+  await saveCld();toast(`✅ Added ${n} variable${n===1?'':'s'}`);
+}
+async function addCldLink(){
+  const from=v('cld-from'),to=v('cld-to'),sign=v('cld-sign')||'+',delay=document.getElementById('cld-delay').checked;
+  if(!from||!to){toast('⚠️ Add at least two variables first');return;}
+  if(from===to){toast('⚠️ Pick two different variables');return;}
+  if(S.cld.links.some(l=>l.from===from&&l.to===to)){toast('That link already exists');return;}
+  S.cld.links.push({id:cldId(),from,to,sign,delay});document.getElementById('cld-delay').checked=false;await saveCld();
+}
+async function delCldVar(id){S.cld.vars=S.cld.vars.filter(x=>x.id!==id);S.cld.links=S.cld.links.filter(l=>l.from!==id&&l.to!==id);await saveCld();}
+async function delCldLink(id){S.cld.links=S.cld.links.filter(l=>l.id!==id);await saveCld();}
+// Simple cycles (each found once, starting from its lowest-index variable). Even number of "−" links = reinforcing.
+function findLoops(){
+  const ids=S.cld.vars.map(x=>x.id),idx=Object.fromEntries(ids.map((id,i)=>[id,i]));
+  const out=[];const adj={};S.cld.links.forEach(l=>{if(idx[l.from]!=null&&idx[l.to]!=null)(adj[l.from]||=[]).push(l);});
+  for(const start of ids){
+    const stack=[[start,[start],[]]];
+    while(stack.length&&out.length<30){
+      const[node,path,links]=stack.pop();
+      for(const l of adj[node]||[]){
+        if(l.to===start){out.push({nodes:path,links:[...links,l]});continue;}
+        if(idx[l.to]>idx[start]&&!path.includes(l.to)&&path.length<8)stack.push([l.to,[...path,l.to],[...links,l]]);
+      }
+    }
+  }
+  return out.map(c=>({...c,type:c.links.filter(l=>l.sign==='-').length%2===0?'R':'B'}));
+}
+function renderCld(){
+  const vars=S.cld.vars,links=S.cld.links,name=id=>vars.find(x=>x.id===id)?.name||'?';
+  const opts=vars.map(x=>`<option value="${x.id}">${e(x.name)}</option>`).join('');
+  ['cld-from','cld-to'].forEach((id,i)=>{const s=document.getElementById(id);if(!s)return;const keep=s.value;s.innerHTML=opts;if(keep&&vars.some(x=>x.id===keep))s.value=keep;else if(vars[i])s.value=vars[i].id;});
+  const loops=findLoops();
+  let r=0,b=0;loops.forEach(l=>l.label=l.type==='R'?'R'+(++r):'B'+(++b));
+  const le=document.getElementById('cld-loops');
+  if(le)le.innerHTML=loops.length?loops.map(l=>`<div class="loop-row"><span class="loop-badge ${l.type}">${l.label}</span><div><div class="loop-path">${l.nodes.map(n=>e(name(n))).join(' → ')} → ${e(name(l.nodes[0]))}</div><div class="loop-kind">${l.type==='R'?'Reinforcing: change keeps growing in the same direction (a vicious or virtuous circle).':'Balancing: the loop pushes back towards a limit or goal and resists change.'}${l.links.some(x=>x.delay)?' Contains a delay, so expect the effect to show late.':''}</div></div></div>`).join(''):'<p class="muted">No loops yet. A loop appears when a chain of links leads back to where it started.</p>';
+  const ie=document.getElementById('cld-items');
+  if(ie)ie.innerHTML=(vars.length?vars.map(x=>`<span class="var-chip">${e(x.name)}<button onclick="delCldVar('${x.id}')" aria-label="Remove ${e(x.name)}">×</button></span>`).join(''):'<p class="muted">No variables yet.</p>')+
+    (links.length?`<div class="link-list">${links.map(l=>`<div class="link-row"><span>${e(name(l.from))} <b class="${l.sign==='-'?'neg':'pos'}">${l.sign==='-'?'−':'+'}</b>${l.delay?' <i title="delay">‖</i>':''} → ${e(name(l.to))}</span><button class="btn-i" onclick="delCldLink('${l.id}')" aria-label="Remove link"><span class="material-icons-round" style="font-size:14px">close</span></button></div>`).join('')}</div>`:'');
+  drawCld(loops);
+}
+function drawCld(loops){
+  const svg=document.getElementById('cld-svg');if(!svg)return;
+  const vars=S.cld.vars,W=640,H=420,cx=W/2,cy=H/2,R=Math.min(W,H)/2-70;
+  if(!vars.length){svg.innerHTML=`<text x="${cx}" y="${cy}" text-anchor="middle" class="cld-empty">Add variables to start the map</text>`;return;}
+  const pos={};vars.forEach((x,i)=>{const a=-Math.PI/2+i*2*Math.PI/vars.length;pos[x.id]={x:cx+R*Math.cos(a),y:cy+R*Math.sin(a)};});
+  const wrap=t=>{const w=t.split(' '),lines=[''];w.forEach(word=>{if((lines[lines.length-1]+' '+word).trim().length>16&&lines[lines.length-1])lines.push(word);else lines[lines.length-1]=(lines[lines.length-1]+' '+word).trim();});return lines.slice(0,3);};
+  let s='<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="cld-arrow"/></marker></defs>';
+  S.cld.links.forEach(l=>{
+    const a=pos[l.from],b=pos[l.to];if(!a||!b)return;
+    const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len,pad=34;
+    const x1=a.x+ux*pad,y1=a.y+uy*pad,x2=b.x-ux*pad,y2=b.y-uy*pad;
+    const bend=0.18*len,mx=(x1+x2)/2-uy*bend,my=(y1+y2)/2+ux*bend;
+    const lx=(x1+2*mx+x2)/4,ly=(y1+2*my+y2)/4;
+    s+=`<path d="M${x1},${y1} Q${mx},${my} ${x2},${y2}" class="cld-edge ${l.sign==='-'?'neg':'pos'}" marker-end="url(#arr)"/>`;
+    s+=`<circle cx="${lx}" cy="${ly}" r="9" class="cld-signbg"/><text x="${lx}" y="${ly+4}" text-anchor="middle" class="cld-sign ${l.sign==='-'?'neg':'pos'}">${l.sign==='-'?'−':'+'}</text>`;
+    if(l.delay){const tx=-uy*6,ty=ux*6;s+=`<path d="M${lx-ux*14+tx},${ly-uy*14+ty} l${-tx*2},${-ty*2} M${lx-ux*18+tx},${ly-uy*18+ty} l${-tx*2},${-ty*2}" class="cld-delaymark"/>`;}
+  });
+  vars.forEach(x=>{const p=pos[x.id],lines=wrap(x.name);
+    s+=`<g><rect x="${p.x-62}" y="${p.y-10-lines.length*7}" width="124" height="${20+lines.length*14}" rx="10" class="cld-node"/>`+
+      lines.map((t,i)=>`<text x="${p.x}" y="${p.y+4+(i-(lines.length-1)/2)*14}" text-anchor="middle" class="cld-label">${e(t)}</text>`).join('')+'</g>';});
+  loops.forEach((l,i)=>{const pts=l.nodes.map(n=>pos[n]);const lx=pts.reduce((a,p)=>a+p.x,0)/pts.length,ly=pts.reduce((a,p)=>a+p.y,0)/pts.length+i*4;
+    s+=`<circle cx="${lx}" cy="${ly}" r="15" class="loop-mark ${l.type}"/><text x="${lx}" y="${ly+4}" text-anchor="middle" class="loop-mark-t">${l.label}</text>`;});
+  svg.innerHTML=s;
+}
+
+// ═══════════════════════════════════════════════════════
+// LEVERAGE — Meadows' 12 places to intervene
+// ═══════════════════════════════════════════════════════
+const LEVERAGE=[
+  null,
+  {n:1,name:'Transcend paradigms',group:'Intent'},
+  {n:2,name:'Change the mindset or paradigm',group:'Intent'},
+  {n:3,name:'Change the goal of the system',group:'Intent'},
+  {n:4,name:'Let the system change its own structure',group:'Design'},
+  {n:5,name:'Change the rules (incentives, laws)',group:'Design'},
+  {n:6,name:'Change who gets what information',group:'Design'},
+  {n:7,name:'Strengthen a reinforcing loop',group:'Feedback'},
+  {n:8,name:'Strengthen a balancing loop',group:'Feedback'},
+  {n:9,name:'Shorten delays',group:'Feedback'},
+  {n:10,name:'Change the physical structure',group:'Parameters'},
+  {n:11,name:'Change buffer sizes (stocks)',group:'Parameters'},
+  {n:12,name:'Change numbers (budgets, staff, targets)',group:'Parameters'}
+];
+const LEV_GROUP_COLOR={Intent:'var(--purple)',Design:'var(--blue)',Feedback:'var(--teal)',Parameters:'var(--ink4)'};
+function renderLeverage(){
+  const sel=document.getElementById('lev-level');
+  if(sel&&!sel.options.length)sel.innerHTML=LEVERAGE.filter(Boolean).slice().reverse().map(l=>`<option value="${l.n}">${l.n}. ${l.name} (${l.group})</option>`).join('');
+  const lad=document.getElementById('lev-ladder');
+  if(lad)lad.innerHTML=LEVERAGE.filter(Boolean).map(l=>{const c=S.leverage.filter(x=>+x.level===l.n).length;
+    return `<div class="lev-rung${c?' has':''}" style="--g:${LEV_GROUP_COLOR[l.group]}"><span class="lev-n">${l.n}</span><span class="lev-name">${l.name}</span>${c?`<span class="lev-c">${c}</span>`:''}</div>`;}).join('')+
+    '<div class="lev-axis"><span>Stronger, harder</span><span>Weaker, easier</span></div>';
+  const list=document.getElementById('lev-list');if(!list)return;
+  if(!S.leverage.length){list.innerHTML='<div class="empty"><span class="material-icons-round">architecture</span><h3>No actions yet</h3><p>Add two or three possible actions above, then test the strongest one as an experiment.</p></div>';return;}
+  list.innerHTML=[...S.leverage].sort((a,b)=>a.level-b.level).map(x=>{const L=LEVERAGE[x.level]||{};return `<div class="lev-item" style="--g:${LEV_GROUP_COLOR[L.group]||'var(--ink4)'}">
+    <span class="lev-n big">${x.level}</span>
+    <div style="min-width:0;flex:1"><div class="lev-item-t">${e(x.title)}</div><div class="lev-item-m">${e(L.name||'')} · ${e(L.group||'')}${x.target?' · acts on '+e(x.target):''} · ${e(x.effort||'medium')} effort</div></div>
+    <div class="lev-actions"><button class="btn btn-g btn-sm" onclick="leverageToExperiment('${x.id}')"><span class="material-icons-round">science</span>Test it</button><button class="btn-i" onclick="delLeverage('${x.id}')" aria-label="Delete"><span class="material-icons-round" style="font-size:14px">delete</span></button></div>
+  </div>`;}).join('');
+}
+async function saveLeverage(){
+  const d={title:v('lev-title'),level:+v('lev-level')||12,target:v('lev-target'),effort:v('lev-effort')};
+  if(!d.title){toast('⚠️ Describe the action');return;}
+  S.leverage.push(await DB.add('leverage',d));clear(['lev-title','lev-target']);renderLeverage();updateStats();toast('✅ Action added');
+}
+async function delLeverage(id){await DB.del('leverage',id);S.leverage=S.leverage.filter(x=>x.id!==id);renderLeverage();updateStats();}
+function leverageToExperiment(id){
+  const x=S.leverage.find(y=>y.id===id);if(!x)return;
+  nav('iterations');sv('i-title',x.title);sv('i-hyp',`If we ${x.title.charAt(0).toLowerCase()+x.title.slice(1)}, then … will improve, because …`);sv('i-entry',x.target||'');openModal('m-iter');
+}
+
+// ═══════════════════════════════════════════════════════
+// METHODS LIBRARY
+// ═══════════════════════════════════════════════════════
+const METHODS=[
+  {id:'cynefin',family:'Understand the problem',name:'Cynefin framework',origin:'Dave Snowden, 2007',when:'At the start, to decide which kind of method fits the problem.',tab:'approach'},
+  {id:'smart',family:'Understand the problem',name:'SMART problem statement',origin:'George Doran, 1981',when:'To turn a vague worry into a specific, measurable gap between today and the goal.',tab:'problem'},
+  {id:'iceberg',family:'Systems thinking',name:'Iceberg model',origin:'Systems thinking tradition; Senge, 1990',when:'To look past single events to the patterns, structures and beliefs that produce them.',tab:'system'},
+  {id:'cld',family:'Systems thinking',name:'Causal loop diagram',origin:'Jay Forrester; John Sterman',when:'To see how causes feed back on each other and find vicious or self-correcting circles.',tab:'system'},
+  {id:'leverage',family:'Systems thinking',name:'Leverage points',origin:'Donella Meadows, 1999',when:'To choose where an intervention will have the biggest, longest-lasting effect.',tab:'leverage'},
+  {id:'authority',family:'Systems thinking',name:'Authorising environment',origin:'Andrews, Pritchett & Woolcock (PDIA)',when:'To map who has the authority, acceptance and ability to make change happen.',tab:'authority'},
+  {id:'fishbone',family:'Root causes',name:'Fishbone (Ishikawa) diagram',origin:'Kaoru Ishikawa, 1968',when:'To list possible causes across people, methods, tools, materials, measurement and environment.',tab:'causes'},
+  {id:'whys',family:'Root causes',name:'5 Whys',origin:'Sakichi Toyoda, Toyota',when:'To drill from a symptom down to a root cause by asking "why?" repeatedly.',tab:'causes'},
+  {id:'scientific',family:'Experiment and learn',name:'Scientific method',origin:'Hypothesis → prediction → test → evidence',when:'To treat each fix as a hypothesis with a prediction you can check against evidence.',tab:'iterations'},
+  {id:'pdia',family:'Experiment and learn',name:'PDIA',origin:'Andrews, Pritchett & Woolcock, Harvard Kennedy School',when:'For complex problems: small, quick iterations with real feedback, adapting as you learn.',tab:'iterations'},
+  {id:'pdca',family:'Experiment and learn',name:'PDCA cycle',origin:'W. Edwards Deming',when:'To run a repeatable Plan-Do-Check-Act loop for steady improvement.',tab:'iterations'},
+  {id:'logic',family:'Plan and track',name:'Theory of Change and Logic Model',origin:'Weiss, 1995; W.K. Kellogg Foundation',when:'To spell out how activities lead to outputs, outcomes and impact.',tab:'frameworks'},
+  {id:'okr',family:'Plan and track',name:'OKRs',origin:'Andy Grove; John Doerr',when:'To set an ambitious objective with a few measurable key results.',tab:'frameworks'},
+  {id:'bsc',family:'Plan and track',name:'Balanced Scorecard and SWOT',origin:'Kaplan & Norton, 1992; Andrews, 1960s',when:'To check performance from several angles and weigh strengths, weaknesses, opportunities and threats.',tab:'scorecard'},
+  {id:'eisenhower',family:'Plan and track',name:'Eisenhower matrix',origin:'Dwight D. Eisenhower; Stephen Covey',when:'To sort actions by urgency and importance and decide what to do first.',tab:'matrix'},
+  {id:'tasks',family:'Plan and track',name:'Task board',origin:'Kanban, Toyota production system',when:'To turn decisions into owned, dated tasks and track them to done.',tab:'tasks'},
+  {id:'followups',family:'Plan and track',name:'Follow-ups and reviews',origin:'After-action review, US Army',when:'To check progress regularly and capture lessons.',tab:'followups'}
+];
+function renderMethods(){
+  const el=document.getElementById('methods-list');if(!el)return;
+  const rec=DOMAINS[S.cynefin?.domain]?.methods||[];
+  const fams=[...new Set(METHODS.map(m=>m.family))];
+  el.innerHTML=fams.map(f=>`<div class="m-fam">${f}</div><div class="m-grid">${METHODS.filter(m=>m.family===f).map(m=>`<div class="m-card${rec.includes(m.id)?' rec':''}">
+    <div class="m-name">${e(m.name)}${rec.includes(m.id)?'<span class="chip cg">Suits your case</span>':''}</div>
+    <div class="m-origin">${e(m.origin)}</div><div class="m-when">${e(m.when)}</div>
+    <button class="link-btn" onclick="nav('${m.tab}')">Open</button></div>`).join('')}</div>`).join('');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2486,7 +2879,8 @@ async function switchCase(caseId,toFirstStep=false){
   Object.values(_autosaveTimers).forEach(clearTimeout);_autosaveTimers={};
   CURRENT_CASE=caseId;try{localStorage.setItem('p3_current_case',caseId);}catch{}
   document.querySelectorAll('.main .panel input:not([type=checkbox]):not([type=radio]):not([type=range]), .main .panel textarea').forEach(el=>el.value='');
-  document.getElementById('hero-title').textContent='Welcome to PDIA Workspace';
+  document.querySelectorAll('.cy-q input').forEach(el=>el.checked=false);
+  document.getElementById('hero-title').textContent='Welcome to Problem Solving Lab';
   document.getElementById('hero-sub').textContent='Define your problem statement to begin.';
   document.getElementById('hero-chips').innerHTML='';
   await loadAll();
@@ -2503,13 +2897,14 @@ async function toggleCaseSolved(caseId){
 // WORKFLOW — the PDIA steps in order, with a clear next step
 // ═══════════════════════════════════════════════════════
 const STEPS=[
-  {id:'problem',   label:'Define the problem', short:'Define',   done:()=>!!S.problem?.title, hint:'Say what is wrong, where things are now and where they should be.'},
-  {id:'causes',    label:'Find root causes',   short:'Causes',   done:()=>S.causes.length>0,  hint:'Break the problem into causes with the fishbone or the 5 Whys.'},
-  {id:'authority', label:'Map who can help',   short:'People',   done:()=>S.auth.length>0,    hint:'List the people who can approve, fund or block the work.'},
-  {id:'iterations',label:'Try a small action', short:'Iterate',  done:()=>S.iterations.length>0, hint:'Pick one cause, try a quick experiment, and note what you learned.'},
-  {id:'tasks',     label:'Assign tasks',       short:'Tasks',    done:()=>S.tasks.length>0,   hint:'Turn the next actions into tasks with an owner and a due date.'},
-  {id:'followups', label:'Follow up',          short:'Follow up',done:()=>S.followups.length>0, hint:'Schedule check-ins so the actions do not stall.'},
-  {id:'report',    label:'Report progress',    short:'Report',   done:()=>false,              hint:'Share the one-page report with your team or officers.'}
+  {id:'problem',   label:'Define the problem',   short:'Define',  done:()=>!!S.problem?.title, hint:'Say what is wrong, where things are now and where they should be, with evidence.'},
+  {id:'approach',  label:'Choose your approach', short:'Approach',done:()=>!!S.cynefin?.domain, hint:'Decide whether the problem is clear, complicated, complex or chaotic. That decides the method.'},
+  {id:'system',    label:'See the system',       short:'System',  done:()=>!!(S.iceberg&&Object.values(S.iceberg).some(Boolean))||S.cld.links.length>0, hint:'Look below the events with the iceberg, and map how causes feed back on each other.'},
+  {id:'causes',    label:'Find root causes',     short:'Causes',  done:()=>S.causes.length>0, hint:'List causes with the fishbone and drill down with the 5 Whys.'},
+  {id:'leverage',  label:'Pick leverage points', short:'Leverage',done:()=>S.leverage.length>0, hint:'List possible actions and see which ones change the system most deeply.'},
+  {id:'iterations',label:'Run experiments',      short:'Test',    done:()=>S.iterations.length>0, hint:'Test the strongest action small: hypothesis, prediction, result, adapt (PDIA).'},
+  {id:'tasks',     label:'Act and follow up',    short:'Act',     done:()=>S.tasks.length>0, hint:'Turn what worked into tasks with owners and due dates, and schedule follow-ups.'},
+  {id:'report',    label:'Learn and report',     short:'Report',  done:()=>false, hint:'Share the one-page report and record what you learned.'}
 ];
 function nextStepIndex(fromId){
   const firstOpen=STEPS.findIndex(st=>!st.done());
@@ -2536,7 +2931,7 @@ function renderWorkflow(){
   bar.innerHTML=`
     <div class="wf-top">
       <button class="wf-case" onclick="openCases()" aria-label="Switch case"><span class="material-icons-round">folder_open</span><span class="wf-case-name">${e(currentCase().name||'Untitled case')}</span><span class="material-icons-round" style="font-size:18px">expand_more</span></button>
-      <span class="wf-count">${doneCount} of ${STEPS.length-1} steps done</span>
+      <span class="wf-count">${doneCount} of ${STEPS.length-1} steps done${S.cynefin?.domain?' · '+DOMAINS[S.cynefin.domain].name:''}</span>
     </div>
     <ol class="wf-steps">${STEPS.map((st,i)=>`<li><button class="wf-step${st.done()?' done':''}${i===curIdx?' current':''}" onclick="nav('${st.id}')"><span class="wf-num">${st.done()?'✓':i+1}</span><span class="wf-lbl">${st.short}</span></button></li>`).join('')}</ol>
     <div class="wf-next">
@@ -2659,7 +3054,8 @@ function initAutosave(){
     {name:'problem',selector:'#p-title,#p-current,#p-desired,#p-desc,#p-stake,#p-evidence,#p-timeline',save:()=>saveProblem(true)},
     {name:'smart',selector:'#smart-s,#smart-m,#smart-a,#smart-r,#smart-t',save:()=>saveSmart(true)},
     {name:'pdca',selector:'#pdca-plan,#pdca-do,#pdca-check,#pdca-act',save:()=>savePdca(true)},
-    {name:'whys',selector:'.why-input',save:()=>saveWhys(true)}
+    {name:'whys',selector:'.why-input',save:()=>saveWhys(true)},
+    {name:'iceberg',selector:'#ice-events,#ice-patterns,#ice-structures,#ice-models',save:()=>saveIceberg(true)}
   ];
   groups.forEach(group=>document.querySelectorAll(group.selector).forEach(el=>el.addEventListener('input',()=>queueAutosave(group.name,group.save))));
   document.addEventListener('keydown',handleGlobalWorkspaceKeys);
@@ -2759,9 +3155,9 @@ function renderWhys(){const ins=document.querySelectorAll('.why-input');if(Array
 // ITERATIONS + PDCA
 // ═══════════════════════════════════════════════════════
 async function saveIteration(){
-  const d={title:v('i-title'),did:v('i-did'),learned:v('i-learned'),adapt:v('i-adapt'),entry:v('i-entry'),status:v('i-status')};
+  const d={title:v('i-title'),hypothesis:v('i-hyp'),prediction:v('i-pred'),did:v('i-did'),learned:v('i-learned'),adapt:v('i-adapt'),entry:v('i-entry'),status:v('i-status')};
   if(!d.title){toast('⚠️ Enter title');return;}
-  S.iterations.push(await DB.add('iterations',d));renderIterations();closeM('m-iter');clear(['i-title','i-did','i-learned','i-adapt','i-entry']);updateStats();updateCharts();populateTaskIterLinks();toast('✅ Iteration saved');
+  S.iterations.push(await DB.add('iterations',d));renderIterations();closeM('m-iter');clear(['i-title','i-hyp','i-pred','i-did','i-learned','i-adapt','i-entry']);updateStats();updateCharts();populateTaskIterLinks();toast('✅ Experiment saved');
 }
 async function delIter(id){await DB.del('iterations',id);S.iterations=S.iterations.filter(i=>i.id!==id);renderIterations();updateStats();updateCharts();}
 function renderIterations(){
@@ -2775,6 +3171,7 @@ function renderIterations(){
       <div><div style="font-weight:600;font-size:13.5px">${e(it.title)}</div><div style="font-size:11px;color:var(--ink4);margin-top:2px">${it.entry?'📍 '+e(it.entry)+' · ':''} ${it.createdAt?new Date(it.createdAt).toLocaleDateString():''}</div></div>
       <div style="display:flex;align-items:center;gap:5px"><span class="chip ${sc[it.status]||'cgr'}">${sl[it.status]||it.status}</span><button class="btn-i" onclick="delIter('${it.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div>
     </div>
+    ${it.hypothesis||it.prediction?`<div class="iter-sci">${it.hypothesis?`<div><div style="font-size:10px;font-weight:700;color:var(--blue2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Hypothesis</div><div style="font-size:13px;color:var(--ink2)">${e(it.hypothesis)}</div></div>`:''}${it.prediction?`<div><div style="font-size:10px;font-weight:700;color:var(--blue2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Prediction</div><div style="font-size:13px;color:var(--ink2)">${e(it.prediction)}</div></div>`:''}</div>`:''}
     ${it.did?`<div style="margin-top:9px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Did</div><div style="font-size:13px;color:var(--ink2)">${e(it.did)}</div></div>`:''}
     ${it.learned?`<div style="margin-top:7px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Learned</div><div style="font-size:13px;color:var(--ink2)">${e(it.learned)}</div></div>`:''}
     ${it.adapt?`<div style="margin-top:7px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Adapt</div><div style="font-size:13px;color:var(--ink2)">${e(it.adapt)}</div></div>`:''}
@@ -3233,7 +3630,7 @@ function initCharts(){
   const rc=document.getElementById('radarChart').getContext('2d');
   radarChart=new Chart(rc,{type:'radar',data:{
     labels:['Problem','Causes','Iterations','Tasks','Goals','OKRs','BSC','SWOT','Authority','ToC'],
-    datasets:[{label:'%',data:[0,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(26,86,219,.1)',borderColor:'rgba(26,86,219,.7)',borderWidth:2,pointBackgroundColor:'rgba(26,86,219,.9)',pointRadius:4,pointHoverRadius:5}]
+    datasets:[{label:'%',data:[0,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(15,110,124,.1)',borderColor:'rgba(15,110,124,.7)',borderWidth:2,pointBackgroundColor:'rgba(15,110,124,.9)',pointRadius:4,pointHoverRadius:5}]
   },options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:100,ticks:{display:false},grid:{color:'rgba(0,0,0,.05)'},pointLabels:{font:{size:10,family:"'DM Sans',sans-serif"},color:'#57606a'}}},plugins:{legend:{display:false}}}});
   const tc=document.getElementById('taskChart').getContext('2d');
   taskChart=new Chart(tc,{type:'doughnut',data:{
@@ -3417,7 +3814,7 @@ function generateReport(){
 
   document.getElementById('rpt-body').innerHTML=`
   <div style="border-bottom:3px solid var(--blue);padding-bottom:14px;margin-bottom:18px">
-    <h1>PDIA Integrated Project Report</h1>
+    <h1>Problem-Solving Report</h1>
     <p style="color:var(--ink4);font-size:12px;margin-top:4px">Harvard Kennedy School · PDIA Framework · ${now.toLocaleString()}</p>
     <div style="background:var(--bg);border-radius:var(--r);padding:14px;margin-top:14px;display:flex;align-items:center;gap:20px">
       <div style="text-align:center"><div style="font-family:var(--display);font-size:44px;color:${hc};line-height:1">${health}%</div><div style="font-size:10px;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px">Project Health</div></div>
@@ -3433,6 +3830,16 @@ function generateReport(){
   <h2>1. Problem Statement (PDIA)</h2>
   <div class="rpt-section">${p.title?`<div class="kv"><span class="k">Title</span><span class="val"><strong>${e(p.title)}</strong></span></div><div class="kv"><span class="k">Gap</span><span class="val">${e(p.desc||'—')}</span></div><div class="kv"><span class="k">Current</span><span class="val">${e(p.current||'—')}</span></div><div class="kv"><span class="k">Desired</span><span class="val">${e(p.desired||'—')}</span></div><div class="kv"><span class="k">Stakeholders</span><span class="val">${e(p.stakeholders||'—')}</span></div><div class="kv"><span class="k">Timeline</span><span class="val">${e(p.timeline||'—')}</span></div>`:'<p style="color:var(--ink4)">Problem not yet defined.</p>'}</div>
 
+  <h2>Approach, system and leverage</h2>
+  <div class="rpt-section">${(()=>{const D=DOMAINS[S.cynefin?.domain];const ice=S.iceberg||{};const loops=findLoops();const nm=id=>S.cld.vars.find(x=>x.id===id)?.name||'?';
+    return [D?`<div class="kv"><span class="k">Approach</span><span class="val">${D.name} (${D.rule})</span></div>`:'',
+      ice.events?`<div class="kv"><span class="k">Events</span><span class="val">${e(ice.events)}</span></div>`:'',
+      ice.patterns?`<div class="kv"><span class="k">Patterns</span><span class="val">${e(ice.patterns)}</span></div>`:'',
+      ice.structures?`<div class="kv"><span class="k">Structures</span><span class="val">${e(ice.structures)}</span></div>`:'',
+      ice.models?`<div class="kv"><span class="k">Mental models</span><span class="val">${e(ice.models)}</span></div>`:'',
+      loops.length?`<div class="kv"><span class="k">Feedback loops</span><span class="val">${loops.map(l=>`${l.type==='R'?'Reinforcing':'Balancing'}: ${l.nodes.map(n=>e(nm(n))).join(' → ')}`).join('<br>')}</span></div>`:'',
+      S.leverage.length?`<div class="kv"><span class="k">Leverage</span><span class="val">${[...S.leverage].sort((a,b)=>a.level-b.level).map(x=>`${x.level}. ${e(x.title)}`).join('<br>')}</span></div>`:''
+    ].join('')||'<p style="color:var(--ink4)">Not filled in yet.</p>';})()}</div>
   <h2>2. Tasks Summary</h2>
   <div class="rpt-section">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;font-size:12px;text-align:center">
@@ -3479,7 +3886,7 @@ function printReport(){
   generateReport();
   const body=document.getElementById('rpt-body').innerHTML;
   const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>PDIA Report</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}body{font-family:'DM Sans',sans-serif;font-size:13px;color:#0d1117;max-width:900px;margin:0 auto;padding:36px;line-height:1.6}h1{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px}h2{font-size:14px;font-weight:700;margin:18px 0 8px;padding-bottom:4px;border-bottom:2px solid #1a56db;color:#0d1117}table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px}th{background:#eff6ff;color:#1e40af;padding:6px 8px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px}td{padding:5px 8px;border-bottom:1px solid #e8edf2;vertical-align:top}.kv{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #e8edf2}.k{font-weight:600;min-width:120px;color:#57606a;font-size:11px;text-transform:uppercase}@media print{@page{margin:18mm}}
+  w.document.write(`<!DOCTYPE html><html><head><title>PDIA Report</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}body{font-family:'DM Sans',sans-serif;font-size:13px;color:#0d1117;max-width:900px;margin:0 auto;padding:36px;line-height:1.6}h1{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px}h2{font-size:14px;font-weight:700;margin:18px 0 8px;padding-bottom:4px;border-bottom:2px solid #0f6e7c;color:#0d1117}table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px}th{background:#e8f3f4;color:#0a4f59;padding:6px 8px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px}td{padding:5px 8px;border-bottom:1px solid #e8edf2;vertical-align:top}.kv{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #e8edf2}.k{font-weight:600;min-width:120px;color:#57606a;font-size:11px;text-transform:uppercase}@media print{@page{margin:18mm}}
 /* ── V5 ENHANCED STYLES ── */
 
 /* Dashboard KPI row */
@@ -3525,7 +3932,7 @@ function printReport(){
 /* Interactive table */
 .itbl{width:100%;border-collapse:collapse;font-size:13px}
 .itbl th{background:var(--blue-t);color:var(--blue2);padding:9px 12px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--blue);white-space:nowrap;user-select:none;cursor:pointer}
-.itbl th:hover{background:#dbeafe}
+.itbl th:hover{background:#d3e9ec}
 .itbl th .sort-icon{font-size:11px;margin-left:4px;opacity:.5}
 .itbl th.sorted .sort-icon{opacity:1;color:var(--blue)}
 .itbl td{padding:9px 12px;border-bottom:1px solid var(--border2);vertical-align:middle;transition:background .1s}
@@ -3842,7 +4249,7 @@ async function qcAddTask(){
 }
 async function qcAddNote(){
   const inp=document.getElementById('qc-note');const body=inp.value.trim();if(!body)return;
-  S.notes.push(await DB.add('notes',{title:'',body,color:'#dbeafe',label:'Quick Note'}));inp.value='';renderNotes();toast('✅ Note saved');
+  S.notes.push(await DB.add('notes',{title:'',body,color:'#d3e9ec',label:'Quick Note'}));inp.value='';renderNotes();toast('✅ Note saved');
 }
 async function qcAddIter(){
   const inp=document.getElementById('qc-iter');const title=inp.value.trim();if(!title)return;
@@ -4536,7 +4943,7 @@ async function injectTestCase(){
   const notes = [
     {title:'Key Insight — Zone C LoRaWAN',body:'The switch to LoRaWAN resolves 3 of our 4 sensor connectivity issues. Need to map full coverage area before Phase 2 spec is finalised. Ask NGO partner for their sensor deployment map.',color:'#fef9c3',label:'yellow'},
     {title:'Meeting Notes — CFO Feb 28',body:'CFO: Key concern is Section 36 deviation liability. NOT opposed to pre-qual — just needs clear legal indemnification. Action: get legal opinion specifically addressing CFO personal liability under MFMA.',color:'#fee2e2',label:'red'},
-    {title:'Community Monitor Feedback',body:'"The standpipe near the school was broken for 2 days and nobody came. We need a phone number to call, not just the WhatsApp group." — Nomsa, Westgate Water Monitor. Implication: need 24hr fault hotline number, not just chat.',color:'#dbeafe',label:'blue'},
+    {title:'Community Monitor Feedback',body:'"The standpipe near the school was broken for 2 days and nobody came. We need a phone number to call, not just the WhatsApp group." — Nomsa, Westgate Water Monitor. Implication: need 24hr fault hotline number, not just chat.',color:'#d3e9ec',label:'blue'},
     {title:'Phase 2 Site Assessment Notes',body:'Northridge: 340 unconnected HHs. Rocky terrain less severe than Zone B. Existing informal pipe network from illegal connections — can potentially formalise 60 of these at lower cost. Explore metered connection subsidy model.',color:'#dcfce7',label:'green'}
   ];
   for(const n of notes) await DB.add('notes',n);
