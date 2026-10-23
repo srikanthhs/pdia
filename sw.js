@@ -1,5 +1,5 @@
 // Network-first for the app shell so updates show up, with a cached copy for offline use.
-const CACHE = 'pdia-v1';
+const CACHE = 'pdia-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -21,6 +21,6 @@ self.addEventListener('fetch', e => {
     fetch(req).then(res => {
       if (res.ok || res.type === 'opaque') { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
       return res;
-    }).catch(() => caches.match(req).then(r => r || caches.match('./index.html')))
+    }).catch(() => caches.match(req).then(r => r || (req.mode === 'navigate' ? caches.match('./index.html') : Response.error())))
   );
 });

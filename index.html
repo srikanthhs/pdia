@@ -611,6 +611,55 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 @media(max-width:760px){.guide-feat-grid{grid-template-columns:1fr 1fr}.guide-two-col{grid-template-columns:1fr}}
 
 
+
+/* ── CASES + WORKFLOW ── */
+.case-card{display:flex;align-items:center;gap:9px;margin:2px 8px 10px;padding:10px 10px;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--bg);cursor:pointer;font-family:var(--font);color:var(--ink);transition:var(--anim)}
+.case-card:hover{border-color:var(--blue);background:var(--blue-t)}
+.case-card>.material-icons-round:first-child{color:var(--blue);font-size:20px}
+.case-card-name{display:block;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.case-card-meta{display:block;font-size:10.5px;color:var(--ink4);font-weight:500}
+.step-badge{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--ink4);flex-shrink:0;font-variant-numeric:tabular-nums}
+.step-badge.done{background:var(--green);border-color:var(--green);color:#fff}
+.nav-item.active .step-badge:not(.done){border-color:var(--blue);color:var(--blue)}
+.case-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.case-row{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg2)}
+.case-row.current{border-color:var(--blue);background:var(--blue-t)}
+.case-row-name{font-size:13.5px;font-weight:700;overflow-wrap:anywhere}
+.case-row-meta{font-size:11px;color:var(--ink4);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.case-chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px}
+.case-chip.active{background:var(--blue-t);color:var(--blue)}
+.case-chip.solved{background:var(--green-t);color:var(--green)}
+.wf-bar{max-width:1060px;margin:0 auto 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:14px 16px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:12px}
+.wf-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wf-case{display:inline-flex;align-items:center;gap:6px;border:none;background:none;font-family:var(--font);font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;padding:4px 6px;margin-left:-6px;border-radius:8px;min-width:0}
+.wf-case:hover{background:var(--bg)}
+.wf-case>.material-icons-round:first-child{color:var(--blue);font-size:19px}
+.wf-case-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-count{font-size:11px;font-weight:600;color:var(--ink4);white-space:nowrap;font-variant-numeric:tabular-nums}
+.wf-steps{list-style:none;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.wf-steps::-webkit-scrollbar{display:none}
+.wf-steps li{flex:1;min-width:64px}
+.wf-step{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;font-family:var(--font);padding:4px 2px;border-radius:8px;position:relative}
+.wf-step:hover{background:var(--bg)}
+.wf-num{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--ink4);background:var(--bg2);font-variant-numeric:tabular-nums}
+.wf-lbl{font-size:10.5px;font-weight:600;color:var(--ink4);white-space:nowrap}
+.wf-step.done .wf-num{background:var(--green);border-color:var(--green);color:#fff}
+.wf-step.done .wf-lbl{color:var(--green)}
+.wf-step.current .wf-num{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 3px var(--bglow)}
+.wf-step.current.done .wf-num{color:#fff}
+.wf-step.current .wf-lbl{color:var(--blue);font-weight:700}
+.wf-next{display:flex;align-items:center;gap:12px;background:var(--blue-t);border-radius:var(--r);padding:10px 12px}
+.wf-next-t{font-size:13px;font-weight:700;color:var(--blue2)}
+.wf-next-s{font-size:12px;color:var(--ink3);margin-top:1px}
+.wf-next .btn{flex-shrink:0}
+@media(max-width:600px){
+  .wf-bar{padding:12px;margin-bottom:12px;border-radius:var(--r)}
+  .wf-steps{gap:0}
+  .wf-steps li{min-width:46px}
+  .wf-lbl{font-size:9.5px}
+  .wf-count{display:none}
+  .case-row{flex-wrap:wrap}
+}
 /* ── MOBILE ── */
 .bottom-nav{display:none}
 @media(max-width:900px){
@@ -712,37 +761,34 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <div class="layout">
 <!-- ── SIDENAV ── -->
 <nav class="sidenav">
-  <div class="nav-section">Overview</div>
+  <button class="case-card" onclick="openCases()"><span class="material-icons-round">folder_open</span><span style="min-width:0;flex:1;text-align:left"><span class="case-card-name" data-case-name>My first case</span><span class="case-card-meta" data-case-meta>Active</span></span><span class="material-icons-round" style="font-size:18px">unfold_more</span></button>
   <button class="nav-item active" onclick="nav('dashboard')" data-nav="dashboard"><span class="material-icons-round">dashboard</span>Dashboard</button>
 
-  <div class="nav-section" style="margin-top:6px">Problem & Analysis</div>
-  <button class="nav-item" onclick="nav('problem')" data-nav="problem"><span class="material-icons-round">crisis_alert</span><span style="flex:1">Problem & SMART</span><span style="font-size:9px;font-weight:700;background:var(--blue);color:#fff;border-radius:100px;padding:1px 6px">1</span></button>
-  <button class="nav-item" onclick="nav('causes')" data-nav="causes"><span class="material-icons-round">account_tree</span><span style="flex:1">Cause Analysis</span><span style="font-size:9px;font-weight:700;background:var(--amber);color:#fff;border-radius:100px;padding:1px 6px">2</span></button>
+  <div class="nav-section" style="margin-top:6px">PDIA steps</div>
+  <button class="nav-item" onclick="nav('problem')" data-nav="problem"><span class="step-badge" data-step-badge="problem"></span><span style="flex:1">Define the problem</span></button>
+  <button class="nav-item" onclick="nav('causes')" data-nav="causes"><span class="step-badge" data-step-badge="causes"></span><span style="flex:1">Find root causes</span></button>
+  <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="step-badge" data-step-badge="authority"></span><span style="flex:1">Map who can help</span></button>
+  <button class="nav-item" onclick="nav('iterations')" data-nav="iterations"><span class="step-badge" data-step-badge="iterations"></span><span style="flex:1">Try a small action</span></button>
+  <button class="nav-item" onclick="nav('tasks')" data-nav="tasks"><span class="step-badge" data-step-badge="tasks"></span><span style="flex:1">Assign tasks</span> <span class="nav-count" id="nc-tasks">0</span></button>
+  <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="step-badge" data-step-badge="followups"></span><span style="flex:1">Follow up</span> <span class="nav-count warn" id="nc-fu">0</span></button>
+  <button class="nav-item" onclick="nav('report')" data-nav="report"><span class="step-badge" data-step-badge="report"></span><span style="flex:1">Report progress</span></button>
 
-  <div class="nav-section" style="margin-top:6px">Execution</div>
-  <button class="nav-item" onclick="nav('iterations')" data-nav="iterations"><span class="material-icons-round">loop</span><span style="flex:1">Iterations & PDCA</span><span style="font-size:9px;font-weight:700;background:var(--green);color:#fff;border-radius:100px;padding:1px 6px">3</span></button>
-  <button class="nav-item" onclick="nav('tasks')" data-nav="tasks"><span class="material-icons-round">check_box</span>Task Manager <span class="nav-count" id="nc-tasks">0</span></button>
-  <button class="nav-item" onclick="nav('goals')" data-nav="goals"><span class="material-icons-round">track_changes</span>Goal Setting</button>
-  <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="material-icons-round">event_repeat</span>Follow-ups <span class="nav-count warn" id="nc-fu">0</span></button>
-
-  <div class="nav-section" style="margin-top:6px">Frameworks</div>
+  <div class="nav-section" style="margin-top:6px">Review &amp; plan</div>
+  <button class="nav-item" onclick="nav('review')" data-nav="review"><span class="material-icons-round">rate_review</span>Weekly review</button>
+  <button class="nav-item" onclick="nav('goals')" data-nav="goals"><span class="material-icons-round">track_changes</span>Goals</button>
   <button class="nav-item" onclick="nav('frameworks')" data-nav="frameworks"><span class="material-icons-round">science</span>OKR · ToC · OGSM</button>
   <button class="nav-item" onclick="nav('scorecard')" data-nav="scorecard"><span class="material-icons-round">analytics</span>BSC · SWOT</button>
-  <button class="nav-item" onclick="nav('matrix')" data-nav="matrix"><span class="material-icons-round">grid_view</span>Eisenhower Matrix</button>
+  <button class="nav-item" onclick="nav('matrix')" data-nav="matrix"><span class="material-icons-round">grid_view</span>Eisenhower matrix</button>
 
-  <div class="nav-section" style="margin-top:6px">Intelligence</div>
-  <button class="nav-item" onclick="nav('coach')" data-nav="coach"><span class="material-icons-round">smart_toy</span>AI Coach</button>
-  <button class="nav-item" onclick="nav('notes')" data-nav="notes"><span class="material-icons-round">sticky_note_2</span>Keep-style Notes</button>
-  <button class="nav-item" onclick="nav('review')" data-nav="review"><span class="material-icons-round">rate_review</span>Weekly Review</button>
-  <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="material-icons-round">verified_user</span>Authority Map</button>
-
-  <div class="nav-spacer"></div>
+  <div class="nav-section" style="margin-top:6px">Help</div>
+  <button class="nav-item" onclick="nav('coach')" data-nav="coach"><span class="material-icons-round">smart_toy</span>AI coach</button>
+  <button class="nav-item" onclick="nav('notes')" data-nav="notes"><span class="material-icons-round">sticky_note_2</span>Notes</button>
+  <button class="nav-item" onclick="nav('guide')" data-nav="guide"><span class="material-icons-round">school</span>Guide &amp; walkthrough</button>
   <button class="nav-item" onclick="nav('integrations')" data-nav="integrations"><span class="material-icons-round">extension</span>Integrations</button>
-  <button class="nav-item" onclick="nav('guide')" data-nav="guide"><span class="material-icons-round">school</span>Guide & Walkthrough</button>
-  <button class="nav-item" onclick="nav('report')" data-nav="report"><span class="material-icons-round">picture_as_pdf</span>Report & Export</button>
 </nav>
 
 <main class="main">
+<div class="wf-bar" id="wf-bar" hidden></div>
 
 <!-- ════════ DASHBOARD ════════ -->
 <div class="panel active" id="tab-dashboard">
@@ -2043,6 +2089,16 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 </div>
 
 <!-- ═══ MODALS ═══ -->
+<div class="mo" id="m-cases"><div class="modal">
+  <div class="modal-title">Your cases</div>
+  <p style="font-size:12.5px;color:var(--ink3);margin:-8px 0 14px">Each case is one problem with its own causes, iterations, tasks and report. Everything you add is saved to the case that is open.</p>
+  <div class="fr"><label class="fl" for="new-case-name">Start a new case</label>
+    <div style="display:flex;gap:8px"><input id="new-case-name" class="fi" style="flex:1;min-width:0" placeholder="e.g., Low school attendance in Kuthalam block" onkeydown="if(event.key==='Enter')createCase()"/><button class="btn btn-p" onclick="createCase()"><span class="material-icons-round">add</span>Create</button></div></div>
+  <div class="fl" style="margin-top:6px">All cases</div>
+  <div id="case-list" class="case-list"></div>
+  <div class="modal-act"><button class="btn btn-g" onclick="closeM('m-cases')">Close</button></div>
+</div></div>
+
 <div class="mo" id="m-cause"><div class="modal">
   <div class="modal-title">Add Root Cause (Ishikawa 6M)</div>
   <div class="fr"><label class="fl">Category</label><select id="c-cat" class="fs"><option value="Manpower">👥 Manpower — People & Skills</option><option value="Method">⚙️ Method — Processes</option><option value="Machine">🖥️ Machine — Technology</option><option value="Material">📦 Material — Resources</option><option value="Measurement">📏 Measurement — Data</option><option value="Milieu">🌍 Milieu — Context</option></select></div>
@@ -2185,8 +2241,13 @@ const AUTOSAVE_DELAY=900;
 // ═══════════════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════════════
+// Each case keeps its own collections. The first case ('default') uses the original
+// unprefixed names so existing data stays where it is.
+let CURRENT_CASE='default';
+try{CURRENT_CASE=localStorage.getItem('p3_current_case')||'default';}catch{}
+const cn=col=>(col==='cases'||CURRENT_CASE==='default')?col:`case_${CURRENT_CASE}_${col}`;
 const DB={
-  async add(col,data){
+  async add(col,data){col=cn(col);
     if(window.__useLocalMode){
       const arr=JSON.parse(localStorage.getItem('p3_'+col)||'[]');
       const item={id:Date.now()+'_'+Math.random().toString(36).slice(2),...data,createdAt:new Date().toISOString()};
@@ -2196,12 +2257,12 @@ const DB={
     const ref=await addDoc(collection(window.__db,col),{...data,createdAt:serverTimestamp()});
     return{id:ref.id,...data,createdAt:new Date().toISOString()};
   },
-  async getAll(col){
+  async getAll(col){col=cn(col);
     if(window.__useLocalMode)return JSON.parse(localStorage.getItem('p3_'+col)||'[]');
     const{getDocs,collection}=window.__fb;
     try{const s=await getDocs(collection(window.__db,col));return s.docs.map(d=>({id:d.id,...d.data()}));}catch{return[];}
   },
-  async set(key,data){
+  async set(key,data){key=cn(key);
     if(window.__useLocalMode){localStorage.setItem('p3_s_'+key,JSON.stringify(data));return data;}
     const{addDoc,collection,getDocs,updateDoc,doc,serverTimestamp}=window.__fb;
     const s=await getDocs(collection(window.__db,key+'_s'));
@@ -2209,16 +2270,16 @@ const DB={
     else await updateDoc(doc(window.__db,key+'_s',s.docs[0].id),{...data,u:serverTimestamp()});
     return data;
   },
-  async getSingle(key){
+  async getSingle(key){key=cn(key);
     if(window.__useLocalMode)return JSON.parse(localStorage.getItem('p3_s_'+key)||'null');
     const{getDocs,collection}=window.__fb;
     try{const s=await getDocs(collection(window.__db,key+'_s'));if(s.empty)return null;return{id:s.docs[0].id,...s.docs[0].data()};}catch{return null;}
   },
-  async del(col,id){
+  async del(col,id){col=cn(col);
     if(window.__useLocalMode){const a=JSON.parse(localStorage.getItem('p3_'+col)||'[]');localStorage.setItem('p3_'+col,JSON.stringify(a.filter(i=>i.id!==id)));return;}
     const{deleteDoc,doc}=window.__fb;try{await deleteDoc(doc(window.__db,col,id));}catch{}
   },
-  async update(col,id,data){
+  async update(col,id,data){col=cn(col);
     if(window.__useLocalMode){const a=JSON.parse(localStorage.getItem('p3_'+col)||'[]');const i=a.findIndex(x=>x.id===id);if(i>=0){a[i]={...a[i],...data};localStorage.setItem('p3_'+col,JSON.stringify(a));}return;}
     const{updateDoc,doc}=window.__fb;try{await updateDoc(doc(window.__db,col,id),data);}catch{}
   }
@@ -2238,7 +2299,8 @@ window.addEventListener('firebase-ready',async()=>{
     if(fbs)fbs.innerHTML='<div class="int-status-dot" style="background:var(--green)"></div>Connected';
   }
   await loadAll();
-  await injectTestCase();
+  await loadCases();
+  if(await injectTestCase())await loadAll();
   initWorkspaceShell();
   try{initCharts();}catch(e){console.warn('Charts unavailable',e);}
   initDragDrop();
@@ -2268,6 +2330,116 @@ async function loadAll(){
   S.eisenhower=await DB.getSingle('eisenhower')||{q1:[],q2:[],q3:[],q4:[]};renderEisenhower();
   updateStats();updateDashActivity();populateTaskIterLinks();
 }
+
+// ═══════════════════════════════════════════════════════
+// CASES — each problem is its own case with its own data
+// ═══════════════════════════════════════════════════════
+S.cases=[];
+async function loadCases(){
+  const rows=await DB.getAll('cases');
+  if(!rows.some(c=>c.caseId==='default'))rows.unshift({caseId:'default',name:S.problem?.title&&CURRENT_CASE==='default'?S.problem.title:'My first case',status:'active',virtual:true});
+  S.cases=rows.sort((a,b)=>(a.caseId==='default'?-1:b.caseId==='default'?1:String(a.createdAt||'').localeCompare(String(b.createdAt||''))));
+  if(!S.cases.some(c=>c.caseId===CURRENT_CASE)){CURRENT_CASE='default';}
+  renderCaseUI();
+}
+function currentCase(){return S.cases.find(c=>c.caseId===CURRENT_CASE)||{caseId:CURRENT_CASE,name:'Untitled case',status:'active'};}
+async function saveCaseMeta(caseId,data){
+  const c=S.cases.find(x=>x.caseId===caseId);
+  if(c&&!c.virtual&&c.id){await DB.update('cases',c.id,data);Object.assign(c,data);}
+  else{const row=await DB.add('cases',{caseId,name:c?.name||'Untitled case',status:c?.status||'active',...data});
+    S.cases=S.cases.filter(x=>x.caseId!==caseId);S.cases.push(row);}
+  renderCaseUI();
+}
+function renderCaseUI(){
+  const c=currentCase();
+  document.querySelectorAll('[data-case-name]').forEach(el=>el.textContent=c.name||'Untitled case');
+  document.querySelectorAll('[data-case-meta]').forEach(el=>el.textContent=(c.status==='solved'?'Solved':'Active')+' · '+S.cases.length+(S.cases.length===1?' case':' cases'));
+  const list=document.getElementById('case-list');if(!list)return;
+  list.innerHTML=S.cases.map(x=>{
+    const cur=x.caseId===CURRENT_CASE;
+    const created=x.createdAt?new Date(x.createdAt.seconds?x.createdAt.seconds*1000:x.createdAt).toLocaleDateString():'';
+    return `<div class="case-row${cur?' current':''}">
+      <div style="min-width:0;flex:1"><div class="case-row-name">${e(x.name||'Untitled case')}</div>
+      <div class="case-row-meta"><span class="case-chip ${x.status==='solved'?'solved':'active'}">${x.status==='solved'?'Solved':'Active'}</span>${created?' Started '+created:''}${cur?' · Open now':''}</div></div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn btn-g btn-sm" onclick="toggleCaseSolved('${x.caseId}')">${x.status==='solved'?'Reopen':'Mark solved'}</button>
+        ${cur?'':`<button class="btn btn-p btn-sm" onclick="switchCase('${x.caseId}')">Open</button>`}
+      </div></div>`;}).join('');
+}
+function openCases(){renderCaseUI();sv('new-case-name','');openModal('m-cases');setTimeout(()=>document.getElementById('new-case-name')?.focus(),50);}
+async function createCase(){
+  const name=v('new-case-name').trim();
+  if(!name){toast('⚠️ Give the case a short name, for example the problem in a few words');return;}
+  const caseId=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const row=await DB.add('cases',{caseId,name,status:'active'});
+  S.cases.push(row);
+  await switchCase(caseId,true);
+  sv('p-title',name);
+  toast('✅ Case created. Step 1: describe the problem.');
+}
+async function switchCase(caseId,toFirstStep=false){
+  Object.values(_autosaveTimers).forEach(clearTimeout);_autosaveTimers={};
+  CURRENT_CASE=caseId;try{localStorage.setItem('p3_current_case',caseId);}catch{}
+  document.querySelectorAll('.main .panel input:not([type=checkbox]):not([type=radio]):not([type=range]), .main .panel textarea').forEach(el=>el.value='');
+  document.getElementById('hero-title').textContent='Welcome to PDIA Workspace';
+  document.getElementById('hero-sub').textContent='Define your problem statement to begin.';
+  document.getElementById('hero-chips').innerHTML='';
+  await loadAll();
+  updateCharts();renderCaseUI();closeM('m-cases');toggleMobileNav(false);
+  nav(toFirstStep?'problem':'dashboard');
+}
+async function toggleCaseSolved(caseId){
+  const c=S.cases.find(x=>x.caseId===caseId);if(!c)return;
+  await saveCaseMeta(caseId,{status:c.status==='solved'?'active':'solved'});
+  toast(c.status==='solved'?'🎉 Case marked as solved':'Case reopened');
+}
+
+// ═══════════════════════════════════════════════════════
+// WORKFLOW — the PDIA steps in order, with a clear next step
+// ═══════════════════════════════════════════════════════
+const STEPS=[
+  {id:'problem',   label:'Define the problem', short:'Define',   done:()=>!!S.problem?.title, hint:'Say what is wrong, where things are now and where they should be.'},
+  {id:'causes',    label:'Find root causes',   short:'Causes',   done:()=>S.causes.length>0,  hint:'Break the problem into causes with the fishbone or the 5 Whys.'},
+  {id:'authority', label:'Map who can help',   short:'People',   done:()=>S.auth.length>0,    hint:'List the people who can approve, fund or block the work.'},
+  {id:'iterations',label:'Try a small action', short:'Iterate',  done:()=>S.iterations.length>0, hint:'Pick one cause, try a quick experiment, and note what you learned.'},
+  {id:'tasks',     label:'Assign tasks',       short:'Tasks',    done:()=>S.tasks.length>0,   hint:'Turn the next actions into tasks with an owner and a due date.'},
+  {id:'followups', label:'Follow up',          short:'Follow up',done:()=>S.followups.length>0, hint:'Schedule check-ins so the actions do not stall.'},
+  {id:'report',    label:'Report progress',    short:'Report',   done:()=>false,              hint:'Share the one-page report with your team or officers.'}
+];
+function nextStepIndex(fromId){
+  const firstOpen=STEPS.findIndex(st=>!st.done());
+  const cur=STEPS.findIndex(st=>st.id===fromId);
+  if(cur>=0&&cur<STEPS.length-1&&STEPS[cur].done())return cur+1;
+  return firstOpen<0?STEPS.length-1:firstOpen;
+}
+function goNextStep(){const cur=document.querySelector('.panel.active')?.id?.replace('tab-','');nav(STEPS[nextStepIndex(cur)].id);}
+function renderWorkflow(){
+  const bar=document.getElementById('wf-bar');if(!bar)return;
+  const cur=document.querySelector('.panel.active')?.id?.replace('tab-','')||'dashboard';
+  const curIdx=STEPS.findIndex(st=>st.id===cur);
+  const show=cur==='dashboard'||curIdx>=0;
+  bar.hidden=!show;
+  document.querySelectorAll('[data-step-badge]').forEach(el=>{
+    const st=STEPS.find(x=>x.id===el.dataset.stepBadge);
+    const done=st&&st.done();el.classList.toggle('done',!!done);
+    el.textContent=done?'✓':String(STEPS.indexOf(st)+1);
+  });
+  if(!show)return;
+  const doneCount=STEPS.filter(st=>st.done()).length;
+  const ni=nextStepIndex(cur);const next=STEPS[ni];
+  const onNext=ni===curIdx;
+  bar.innerHTML=`
+    <div class="wf-top">
+      <button class="wf-case" onclick="openCases()" aria-label="Switch case"><span class="material-icons-round">folder_open</span><span class="wf-case-name">${e(currentCase().name||'Untitled case')}</span><span class="material-icons-round" style="font-size:18px">expand_more</span></button>
+      <span class="wf-count">${doneCount} of ${STEPS.length-1} steps done</span>
+    </div>
+    <ol class="wf-steps">${STEPS.map((st,i)=>`<li><button class="wf-step${st.done()?' done':''}${i===curIdx?' current':''}" onclick="nav('${st.id}')"><span class="wf-num">${st.done()?'✓':i+1}</span><span class="wf-lbl">${st.short}</span></button></li>`).join('')}</ol>
+    <div class="wf-next">
+      <div style="min-width:0;flex:1"><div class="wf-next-t">${onNext?'You are on':'Next step'}: ${stepTitle(ni)}</div><div class="wf-next-s">${next.hint}</div></div>
+      ${onNext?'':`<button class="btn btn-p" onclick="nav('${next.id}')">Go<span class="material-icons-round">arrow_forward</span></button>`}
+    </div>`;
+}
+const stepTitle=i=>`Step ${i+1} · ${STEPS[i].label}`;
 
 // ═══════════════════════════════════════════════════════
 // NAV
@@ -2321,7 +2493,7 @@ function initWorkspaceShell(){
   _cmdItems=[
     ...[...document.querySelectorAll('.sidenav .nav-item[data-nav]')].map((btn,i)=>({
       type:'nav',
-      label:btn.textContent.replace(/\s+/g,' ').trim(),
+      label:(()=>{const c=btn.cloneNode(true);c.querySelectorAll('.step-badge,.nav-count,.material-icons-round').forEach(x=>x.remove());return c.textContent.replace(/\s+/g,' ').trim();})(),
       hint:i===0?'Dashboard':'Jump',
       icon:btn.querySelector('.material-icons-round')?.textContent||'arrow_forward',
       target:btn.dataset.nav,
@@ -2421,7 +2593,8 @@ function nav(n){
   document.getElementById('tab-'+n).classList.add('active');
   const nb=document.querySelector(`[data-nav="${n}"]`);
   if(nb)nb.classList.add('active');
-  document.querySelectorAll('[data-bnav]').forEach(b=>b.classList.toggle('active',b.dataset.bnav===n));
+  document.querySelectorAll('[data-bnav]').forEach(b=>b.classList.toggle('active',b.dataset.bnav===n||(b.dataset.bnav==='steps'&&STEPS.some(st=>st.id===n))));
+  renderWorkflow();
   const mainEl=document.querySelector('.main');if(mainEl)mainEl.scrollTop=0;
   if(n==='report')generateReport();
   if(n==='dashboard'){updateCharts();updateDashActivity();}
@@ -2436,9 +2609,10 @@ function nav(n){
 // ═══════════════════════════════════════════════════════
 async function saveProblem(quiet=false){
   const d={title:v('p-title'),desc:v('p-desc'),current:v('p-current'),desired:v('p-desired'),stakeholders:v('p-stake'),evidence:v('p-evidence'),timeline:v('p-timeline')};
-  if(!d.title){if(!quiet)toast('?????? Enter a problem title');else setAutosaveState('Enter a problem title to autosave','error');return;}
+  if(!d.title){if(!quiet)toast('⚠️ Enter a problem title');else setAutosaveState('Enter a problem title to autosave','error');return;}
   S.problem=await DB.set('problem',d);renderProblem();updateStats();
-  if(quiet)setAutosaveState('Problem draft saved'); else {setAutosaveState('Problem saved');toast('??? Problem saved');}
+  if(currentCase().name!==d.title)saveCaseMeta(CURRENT_CASE,{name:d.title});
+  if(quiet)setAutosaveState('Problem draft saved'); else {setAutosaveState('Problem saved');toast('✅ Problem saved');}
 }
 function renderProblem(){
   if(!S.problem)return;
@@ -2450,7 +2624,7 @@ function renderProblem(){
   const chips=document.getElementById('hero-chips');
   chips.innerHTML=[p.current&&`<span class="hero-chip">📍 ${e(p.current)}</span>`,p.desired&&`<span class="hero-chip">🎯 ${e(p.desired)}</span>`,p.timeline&&`<span class="hero-chip">📅 ${e(p.timeline)}</span>`].filter(Boolean).join('');
 }
-async function saveSmart(quiet=false){const d={s:v('smart-s'),m:v('smart-m'),a:v('smart-a'),r:v('smart-r'),t:v('smart-t')};S.smart=await DB.set('smart',d);if(quiet)setAutosaveState('SMART goal draft saved');else{setAutosaveState('SMART goal saved');toast('??? SMART goal saved');}}
+async function saveSmart(quiet=false){const d={s:v('smart-s'),m:v('smart-m'),a:v('smart-a'),r:v('smart-r'),t:v('smart-t')};S.smart=await DB.set('smart',d);if(quiet)setAutosaveState('SMART goal draft saved');else{setAutosaveState('SMART goal saved');toast('✅ SMART goal saved');}}
 function renderSmart(){if(!S.smart)return;['s','m','a','r','t'].forEach(k=>sv('smart-'+k,S.smart[k]));}
 
 // ═══════════════════════════════════════════════════════
@@ -2473,7 +2647,7 @@ function renderCauses(){
     return`<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">${icons[cat]} ${cat}</div>${items.map(c=>`<div style="background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:9px"><div style="flex:1"><div style="font-size:13px;font-weight:600">${e(c.text)}</div>${c.evidence?`<div style="font-size:11.5px;color:var(--ink4);margin-top:2px">${e(c.evidence)}</div>`:''}</div><span class="chip ${cc[c.controllability]||'cgr'}">${c.controllability}</span><button class="btn-i" onclick="delCause('${c.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div>`).join('')}</div>`;
   }).join('');
 }
-async function saveWhys(quiet=false){const vals=[...document.querySelectorAll('.why-input')].map(el=>el.value);S.whys=vals;await DB.set('whys',vals);if(quiet)setAutosaveState('5 Whys draft saved');else{setAutosaveState('5 Whys saved');toast('??? 5 Whys saved');}}
+async function saveWhys(quiet=false){const vals=[...document.querySelectorAll('.why-input')].map(el=>el.value);S.whys=vals;await DB.set('whys',vals);if(quiet)setAutosaveState('5 Whys draft saved');else{setAutosaveState('5 Whys saved');toast('✅ 5 Whys saved');}}
 function renderWhys(){const ins=document.querySelectorAll('.why-input');if(Array.isArray(S.whys))S.whys.forEach((v,i)=>{if(ins[i])ins[i].value=v||'';});}
 
 // ═══════════════════════════════════════════════════════
@@ -2562,7 +2736,7 @@ function renderTasks(){
   tasks.forEach(t=>{if(statusGroups[t.status])statusGroups[t.status].push(t);else statusGroups.todo.push(t);});
   // Update nav count
   const openCount=S.tasks.filter(t=>t.status!=='done').length;
-  document.getElementById('nc-tasks').textContent=openCount;
+  document.querySelectorAll('[id="nc-tasks"]').forEach(el=>el.textContent=openCount);
   // Kanban
   ['todo','inprogress','review','done'].forEach(status=>{
     const el=document.getElementById('tasks-'+status);if(!el)return;
@@ -2717,7 +2891,7 @@ function renderFollowups(){
   else if(_fuFilter==='upcoming')items=items.filter(f=>!f.done&&f.date>today);
   else if(_fuFilter==='done')items=items.filter(f=>f.done);
   const overdue=S.followups.filter(f=>!f.done&&f.date<today).length;
-  document.getElementById('nc-fu').textContent=overdue||S.followups.filter(f=>!f.done).length;
+  document.querySelectorAll('[id="nc-fu"]').forEach(el=>el.textContent=overdue||S.followups.filter(f=>!f.done).length);
   if(!items.length){el.innerHTML='<div class="empty"><span class="material-icons-round">event_repeat</span><h3>No follow-ups found</h3><p>Schedule follow-ups to stay accountable</p></div>';return;}
   const sortedItems=[...items].sort((a,b)=>a.date.localeCompare(b.date));
   el.innerHTML=sortedItems.map(f=>{
@@ -2910,8 +3084,9 @@ function updateStats(){
   _set('s-iter',S.iterations.length);_set('s-tasks',openTasks);_set('s-goals',S.goals.length);
   _set('s-fu',overdueFu);
   _setH('s-fu-d',overdueFu?`<span class="cr">${overdueFu} overdue</span>`:`<span class="cg">All clear</span>`);
-  _set('s-goals-d',`${avgOkr}% OKR avg`);_set('nc-tasks',openTasks);
-  const ncfu=document.getElementById('nc-fu');if(ncfu){ncfu.textContent=overdueFu||S.followups.filter(f=>!f.done).length;ncfu.className='nav-count'+(overdueFu?' danger':' warn');}
+  _set('s-goals-d',`${avgOkr}% OKR avg`);document.querySelectorAll('[id="nc-tasks"]').forEach(el=>el.textContent=openTasks);
+  if(typeof renderWorkflow==='function')renderWorkflow();
+  document.querySelectorAll('[id="nc-fu"]').forEach(ncfu=>{ncfu.textContent=overdueFu||S.followups.filter(f=>!f.done).length;ncfu.className='nav-count'+(overdueFu?' danger':' warn');});
   // Health
   let h=0;
   if(S.problem?.title)h+=20;if(S.causes.length>=3)h+=12;if(S.iterations.length>=2)h+=18;
@@ -4061,8 +4236,10 @@ document.addEventListener('keydown',ev=>{if(ev.key==='Escape')document.querySele
 // TEST CASE SEED — Urban Water Access Crisis
 // ═══════════════════════════════════════════════════════
 async function injectTestCase(){
-  if(localStorage.getItem('p3_testcase_loaded')==='1'){return;}
+  // Only seed the sample into a completely empty first case, so it never lands on top of real data.
+  if(localStorage.getItem('p3_testcase_loaded')==='1')return false;
   localStorage.setItem('p3_testcase_loaded','1');
+  if(CURRENT_CASE!=='default'||S.cases.length>1||S.problem||S.tasks.length||S.causes.length||S.iterations.length)return false;
   
   // Problem
   await DB.set('problem',{
@@ -4267,7 +4444,10 @@ async function injectTestCase(){
     q4:['Redesign project logo','Reorganise old project file folders','Attend optional municipal social event']
   });
 
-  toast('✅ Test case loaded: Urban Water Access Crisis. Explore all sections!',5000);
+  await DB.add('cases',{caseId:'default',name:'Sample: Urban Water Access Crisis',status:'active'});
+  await loadCases();
+  toast('Sample case loaded. Tap the case name to start your own.',5000);
+  return true;
 }
 
 
@@ -4294,9 +4474,9 @@ function toggleGuideEx(id){
 </script>
 <nav class="bottom-nav" aria-label="Quick navigation">
   <button data-bnav="dashboard" onclick="nav('dashboard')"><span class="material-icons-round">dashboard</span>Home</button>
-  <button data-bnav="problem" onclick="nav('problem')"><span class="material-icons-round">track_changes</span>Problem</button>
-  <button data-bnav="iterations" onclick="nav('iterations')"><span class="material-icons-round">autorenew</span>Iterate</button>
+  <button data-bnav="steps" onclick="goNextStep()"><span class="material-icons-round">route</span>Next step</button>
   <button data-bnav="tasks" onclick="nav('tasks')"><span class="material-icons-round">checklist</span>Tasks</button>
+  <button onclick="openCases()"><span class="material-icons-round">folder_open</span>Cases</button>
   <button onclick="toggleMobileNav(true)"><span class="material-icons-round">menu</span>More</button>
 </nav>
 <script>
