@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a56db">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PDIA">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>PDIA Workspace v6 — Harvard Kennedy School · Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -18,7 +26,8 @@
   messagingSenderId: "360662145036",
   appId: "1:360662145036:web:98de35bd80659ed7e43629",
   measurementId: "G-9LP4D07CQV"
-};  window.__useLocalMode = true;
+};  if (!window.__fbReady) {
+  window.__useLocalMode = true;
   try {
     if (firebaseConfig.apiKey === "FIREBASE_API_KEY") throw new Error("demo");
     const app = initializeApp(firebaseConfig);
@@ -26,7 +35,17 @@
     window.__fb = { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp };
     window.__useLocalMode = false;
   } catch(e) { console.warn("Local mode — data stored in localStorage"); }
+  window.__fbReady = true;
   window.dispatchEvent(new Event("firebase-ready"));
+  }
+</script>
+<script>
+  // If the Firebase SDK can't load (offline, blocked CDN), start in local mode instead of hanging.
+  setTimeout(function(){
+    if (window.__fbReady) return;
+    window.__useLocalMode = true; window.__fbReady = true;
+    window.dispatchEvent(new Event("firebase-ready"));
+  }, 5000);
 </script>
 <style>
 :root{
@@ -591,17 +610,63 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .guide-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:rgba(255,255,255,.06);border-radius:50%}
 @media(max-width:760px){.guide-feat-grid{grid-template-columns:1fr 1fr}.guide-two-col{grid-template-columns:1fr}}
 
+
+/* ── MOBILE ── */
+.bottom-nav{display:none}
+@media(max-width:900px){
+  body{height:100dvh}
+  .layout{min-height:0}
+  .main{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .appbar{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));gap:6px}
+  .bottom-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:320;background:var(--bg2);border-top:1px solid var(--border2);box-shadow:0 -2px 12px rgba(0,0,0,.06);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+  .bottom-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;border:none;background:none;font-family:var(--font);font-size:10.5px;font-weight:600;color:var(--ink4);padding:6px 0;border-radius:10px;cursor:pointer;min-height:48px}
+  .bottom-nav button .material-icons-round{font-size:22px}
+  .bottom-nav button.active{color:var(--blue);background:var(--blue-t)}
+  .kpi-row{grid-template-columns:repeat(3,1fr)!important}
+  .itbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .itbl{min-width:560px}
+  .sh{flex-wrap:wrap}
+  .sh-actions{flex-wrap:wrap}
+  .panel [style*="grid-template-columns:1fr 1fr 320px"]{grid-template-columns:1fr!important}
+  .nav-item,.btn{min-height:40px}
+  #tc{bottom:calc(76px + env(safe-area-inset-bottom));right:12px;left:12px;align-items:center}
+}
+@media(max-width:600px){
+  .logo-hks{display:none}
+  .logo{font-size:15px}
+  .main{padding-left:12px;padding-right:12px}
+  .card{padding:16px 14px}
+  .kpi-row{grid-template-columns:repeat(2,1fr)!important}
+  .panel [style*="display:grid"]:not(.keep-grid):not(.kpi-row){grid-template-columns:1fr!important}
+  .panel [style*="repeat(4,1fr)"]:not(.keep-grid),.panel [style*="repeat(5,1fr)"][style*="gap:8px"]:not(.keep-grid){grid-template-columns:repeat(2,1fr)!important}
+  .sh-actions{width:100%}
+  .sh-actions .btn{flex:1;justify-content:center}
+  .integration-card{flex-wrap:wrap}
+  .ei-add{flex-wrap:wrap}
+  .ei-add input{min-width:0;flex:1}
+  .itbl-search{width:100%}
+  input,select,textarea{font-size:16px!important}
+  .modal{width:100%;max-width:none;border-radius:var(--rxl) var(--rxl) 0 0;align-self:flex-end;max-height:92dvh;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+  .modal-act .btn{flex:1;justify-content:center}
+  .notif-panel{left:12px;right:12px;width:auto}
+  .keep-grid{grid-template-columns:22px 1fr 1fr!important}
+  .ei-quad{padding:10px 8px;min-width:0}
+  .ei-label{display:none}
+  .ei-add input{width:100%}
+}
 </style>
 </head>
 <body>
 
 <!-- ── APPBAR ── -->
 <header class="appbar">
+  <button class="mobile-nav-btn" onclick="toggleMobileNav()" aria-label="Open navigation"><span class="material-icons-round">menu</span></button>
   <div class="logo">
     <div class="logo-mark"><span class="material-icons-round" style="font-size:17px">psychology_alt</span></div>
     <div><div>PDIA Workspace</div><div class="logo-hks">HARVARD KENNEDY SCHOOL · V6 PRO</div></div>
   </div>
   <div class="appbar-sp"></div>
+  <button class="command-btn" onclick="openCommandPalette()" aria-label="Search sections"><span class="material-icons-round" style="font-size:20px">search</span></button>
   <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">
     <span class="material-icons-round" style="font-size:20px">notifications</span>
     <span class="notif-dot" id="notif-dot" style="display:none"></span>
@@ -1232,7 +1297,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
     <div class="card-title"><span class="material-icons-round ico" style="color:var(--amber)">grid_view</span>Eisenhower Decision Matrix<span class="card-sub">Dwight D. Eisenhower · Stephen Covey</span></div>
     <div class="fw-tag" style="background:var(--amber-t);color:var(--amber)">EISENHOWER MATRIX · Time Management</div>
     <p style="font-size:12.5px;color:var(--ink3);margin-bottom:14px">Categorise tasks by urgency and importance to eliminate busywork and focus on what matters most.</p>
-    <div style="display:grid;grid-template-columns:60px 1fr 1fr;gap:0;font-size:11px">
+    <div class="keep-grid" style="display:grid;grid-template-columns:60px 1fr 1fr;gap:0;font-size:11px">
       <div></div>
       <div style="text-align:center;padding:7px;font-weight:700;background:var(--red-t);color:var(--red);border-radius:var(--r) 0 0 0;font-size:10px;text-transform:uppercase;letter-spacing:.5px">🔴 URGENT</div>
       <div style="text-align:center;padding:7px;font-weight:700;background:var(--bg);color:var(--ink4);border-radius:0 var(--r) 0 0;font-size:10px;text-transform:uppercase;letter-spacing:.5px">⚪ NOT URGENT</div>
@@ -2174,9 +2239,9 @@ window.addEventListener('firebase-ready',async()=>{
   }
   await loadAll();
   await injectTestCase();
-  initCharts();
-  initDragDrop();
   initWorkspaceShell();
+  try{initCharts();}catch(e){console.warn('Charts unavailable',e);}
+  initDragDrop();
   initAutosave();
   scanNotifications();
   setInterval(scanNotifications,60000);
@@ -2356,6 +2421,8 @@ function nav(n){
   document.getElementById('tab-'+n).classList.add('active');
   const nb=document.querySelector(`[data-nav="${n}"]`);
   if(nb)nb.classList.add('active');
+  document.querySelectorAll('[data-bnav]').forEach(b=>b.classList.toggle('active',b.dataset.bnav===n));
+  const mainEl=document.querySelector('.main');if(mainEl)mainEl.scrollTop=0;
   if(n==='report')generateReport();
   if(n==='dashboard'){updateCharts();updateDashActivity();}
   if(n==='review')initWizard();
@@ -4223,6 +4290,18 @@ function toggleGuideEx(id){
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   header.classList.toggle('open', !isOpen);
+}
+</script>
+<nav class="bottom-nav" aria-label="Quick navigation">
+  <button data-bnav="dashboard" onclick="nav('dashboard')"><span class="material-icons-round">dashboard</span>Home</button>
+  <button data-bnav="problem" onclick="nav('problem')"><span class="material-icons-round">track_changes</span>Problem</button>
+  <button data-bnav="iterations" onclick="nav('iterations')"><span class="material-icons-round">autorenew</span>Iterate</button>
+  <button data-bnav="tasks" onclick="nav('tasks')"><span class="material-icons-round">checklist</span>Tasks</button>
+  <button onclick="toggleMobileNav(true)"><span class="material-icons-round">menu</span>More</button>
+</nav>
+<script>
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 </script>
 </body>
