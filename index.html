@@ -53,7 +53,6 @@
       }
     };
     window.__signOut = async () => { await signOut(auth); try { localStorage.removeItem('p3_auth_choice'); } catch {} location.reload(); };
-    window.__getToken = async () => auth.currentUser ? auth.currentUser.getIdToken() : null;
     window.__useDevice = () => { try { localStorage.setItem('p3_auth_choice', 'device'); } catch {} start(true); };
     onAuthStateChanged(auth, (user) => {
       if (user) { window.__uid = user.uid; window.__user = { name: user.displayName, email: user.email, photo: user.photoURL }; start(false); return; }
@@ -877,8 +876,6 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .note-card,.note-card *{color:#1f2328}
 .theme-btn .material-icons-round{font-size:20px}
 
-/* ── COACH ── */
-.coach-foot{font-size:11.5px;color:var(--ink4);margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
 /* ── SHARE ── */
 .share-link{width:100%;font-size:12px;font-family:ui-monospace,monospace;min-height:70px;word-break:break-all}
@@ -1698,24 +1695,24 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <!-- ════════ AI COACH ════════ -->
 <div class="panel" id="tab-coach">
   <div class="card">
-    <div class="card-title"><span class="material-icons-round ico" style="color:var(--purple)">smart_toy</span>AI Coach<span class="card-sub">Powered by Claude</span><button class="btn btn-g btn-sm" style="margin-left:auto" onclick="clearCoach()"><span class="material-icons-round">refresh</span>New chat</button></div>
-    <p style="font-size:12.5px;color:var(--ink3);margin-bottom:12px">The coach reads the case that is open (problem, system map, causes, experiments, tasks and people) and helps you decide what to do next.</p>
+    <div class="card-title"><span class="material-icons-round ico" style="color:var(--purple)">smart_toy</span>PDIA AI Coach<span class="card-sub">Powered by Claude</span></div>
+    <p style="font-size:12.5px;color:var(--ink3);margin-bottom:12px">Your intelligent coaching assistant. Ask for PDIA guidance, iteration feedback, root cause advice, or strategy suggestions based on your project data.</p>
     <div class="coach-prompts" id="coach-prompts">
-      <button class="prompt-chip" onclick="sendCoachPrompt('Look at my case and tell me the single most useful next step.')">What should I do next?</button>
-      <button class="prompt-chip" onclick="sendCoachPrompt('Is my problem statement clear and specific enough? Suggest a better version.')">Sharpen my problem</button>
-      <button class="prompt-chip" onclick="sendCoachPrompt('Review my causal loop diagram. Which loops matter most, and what links might be missing?')">Check my loop diagram</button>
-      <button class="prompt-chip" onclick="sendCoachPrompt('Which of my root causes are the most actionable, and why?')">Rank my causes</button>
-      <button class="prompt-chip" onclick="sendCoachPrompt('Suggest a small, cheap experiment I can run in the next two weeks, with a hypothesis and a prediction.')">Design an experiment</button>
-      <button class="prompt-chip" onclick="sendCoachPrompt('Who are the key stakeholders I should engage, and how?')">Who should I engage?</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('What is PDIA and how should I apply it to my problem?')">What is PDIA?</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('Review my iterations and suggest what to do next')">Review my iterations</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('Help me identify entry points for my problem')">Find entry points</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('What scientific management frameworks should I prioritise?')">Which framework next?</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('How do I build my authorizing environment?')">Build authorization</button>
+      <button class="prompt-chip" onclick="sendCoachPrompt('Analyse my root causes and suggest the most actionable ones')">Analyse my causes</button>
     </div>
     <div class="coach-chat" id="coach-chat">
-      <div class="msg ai">👋 Hello! I'm your problem-solving coach. Ask me anything about the case that is open, or tap one of the suggestions above.</div>
+      <div class="msg ai">👋 Hello! I'm your PDIA Coach, powered by Claude. I can help you apply the PDIA framework, analyse your iterations, suggest entry points, and guide you through scientific management tools. What would you like to explore?</div>
     </div>
     <div class="coach-input-row">
-      <input class="fi" id="coach-input" placeholder="Ask about your case…" style="flex:1;min-width:0" onkeydown="if(event.key==='Enter')sendCoach()"/>
+      <input class="fi" id="coach-input" placeholder="Ask your PDIA coach anything…" style="flex:1" onkeydown="if(event.key==='Enter')sendCoach()"/>
       <button class="btn btn-p" onclick="sendCoach()"><span class="material-icons-round">send</span>Send</button>
     </div>
-    <div class="coach-foot"><span class="material-icons-round" style="font-size:14px">info</span>Needs Google sign-in. Your case details are sent to Claude to answer, and are not stored by the coach.</div>
+    <div style="font-size:11px;color:var(--ink4);margin-top:8px">⚠️ AI Coach uses the Anthropic API. Ensure Claude API access is enabled for your deployment.</div>
   </div>
 </div>
 
@@ -2917,64 +2914,6 @@ function renderMethods(){
     <div class="m-origin">${e(m.origin)}</div><div class="m-when">${e(m.when)}</div>
     <button class="link-btn" onclick="nav('${m.tab}')">Open</button></div>`).join('')}</div>`).join('');
 }
-
-// ═══════════════════════════════════════════════════════
-// AI COACH — answers come from /api/coach, which holds the Claude key
-// ═══════════════════════════════════════════════════════
-let coachHistory=[];
-function caseSummaryText(){
-  const L=[],add=(k,val)=>{if(val!=null&&String(val).trim())L.push(`${k}: ${String(val).trim()}`);};
-  const p=S.problem||{};
-  add('Case name',currentCase().name);
-  add('Problem',p.title);add('Gap',p.desc);add('Current state',p.current);add('Desired state',p.desired);add('Who is affected',p.stakeholders);add('Evidence',p.evidence);add('Timeline',p.timeline);
-  const sm=S.smart||{};if(Object.values(sm).some(Boolean))add('SMART goal',['s','m','a','r','t'].map(k=>sm[k]).filter(Boolean).join(' | '));
-  const D=DOMAINS[S.cynefin?.domain];if(D)add('Cynefin domain',`${D.name} (${D.rule})`);
-  const ice=S.iceberg||{};add('Iceberg events',ice.events);add('Iceberg patterns',ice.patterns);add('Iceberg structures',ice.structures);add('Iceberg mental models',ice.models);
-  const nm=id=>S.cld.vars.find(x=>x.id===id)?.name||'?';
-  if(S.cld.links.length)add('Causal links',S.cld.links.map(l=>`${nm(l.from)} ${l.sign==='-'?'(−)':'(+)'}${l.delay?' with delay':''} → ${nm(l.to)}`).join('; '));
-  const loops=findLoops();if(loops.length)add('Feedback loops',loops.map(l=>`${l.type==='R'?'Reinforcing':'Balancing'}: ${l.nodes.map(nm).join(' → ')}`).join('; '));
-  if(S.causes.length)add('Root causes',S.causes.map(c=>`[${c.category}] ${c.text}${c.evidence?' (evidence: '+c.evidence+')':''}${c.controllability?' ['+c.controllability+']':''}`).join('; '));
-  if(S.whys?.filter(Boolean).length)add('5 whys',S.whys.filter(Boolean).map((w,i)=>`${i+1}. ${w}`).join(' '));
-  if(S.leverage.length)add('Leverage actions',S.leverage.map(x=>`level ${x.level}: ${x.title}`).join('; '));
-  if(S.iterations.length)add('Experiments',S.iterations.map((it,i)=>`#${i+1} ${it.title||''} [${it.status||''}] hypothesis: ${it.hypothesis||''}; prediction: ${it.prediction||''}; did: ${it.did||''}; learned: ${it.learned||''}; next: ${it.adapt||''}`).join(' || '));
-  if(S.tasks.length)add('Tasks',S.tasks.map(t=>`${t.title} (${t.status}${t.due?', due '+t.due:''})`).join('; '));
-  if(S.auth.length)add('Stakeholders',S.auth.map(a=>`${a.name}${a.org?' / '+a.org:''}: ${a.support}${a.power?`, power ${a.power}/5, interest ${a.interest}/5`:''}`).join('; '));
-  return L.join('\n');
-}
-async function sendCoach(){
-  const input=document.getElementById('coach-input');
-  const msg=input.value.trim();if(!msg)return;
-  input.value='';addChatMsg(msg,'user');
-  if(window.__useLocalMode||!window.__getToken){addChatMsg('The coach needs you to be signed in with Google. Tap "Sign in" at the top, then ask again.','ai');return;}
-  coachHistory.push({role:'user',content:msg});
-  const loader=addChatMsg('Thinking…','ai loading');
-  try{
-    const token=await window.__getToken();
-    const res=await fetch('/api/coach',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({messages:coachHistory,context:caseSummaryText()})});
-    const data=await res.json().catch(()=>({}));
-    loader.remove();
-    if(!res.ok){
-      coachHistory.pop();
-      const why={not_configured:'The coach is not switched on yet. The site owner needs to add a Claude API key in Vercel.',bad_key:'The Claude API key set up for this site is not working.',sign_in_required:'Please sign in again, then ask your question.',busy:'The coach is busy right now. Please try again in a minute.'}[data.error];
-      addChatMsg('⚠️ '+(why||'The coach could not answer just now. Please try again.'),'ai');return;
-    }
-    coachHistory.push({role:'assistant',content:data.text});
-    addChatMsg(data.text,'ai');
-  }catch(err){loader.remove();coachHistory.pop();addChatMsg('⚠️ Could not reach the coach. Check your internet connection and try again.','ai');}
-}
-function sendCoachPrompt(msg){document.getElementById('coach-input').value=msg;sendCoach();}
-function addChatMsg(text,cls){
-  const el=document.createElement('div');el.className='msg '+cls;
-  el.style.cssText='max-width:86%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;white-space:pre-wrap;animation:fadeIn .2s ease';
-  if(cls.includes('user')){el.style.cssText+='align-self:flex-end;background:var(--grad);color:#fff;border-radius:12px 12px 3px 12px;margin-left:auto';}
-  else{el.style.cssText+='align-self:flex-start;background:var(--bg);border:1px solid var(--border2);color:var(--ink);border-radius:12px 12px 12px 3px;';}
-  // Light formatting: **bold** only; everything else stays plain text.
-  el.innerHTML=e(text).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/^#{1,4}\s*/gm,'');
-  document.getElementById('coach-chat').appendChild(el);
-  document.getElementById('coach-chat').scrollTop=99999;
-  return el;
-}
-function clearCoach(){coachHistory=[];const c=document.getElementById('coach-chat');c.innerHTML='';addChatMsg('New conversation. What would you like help with on this case?','ai');}
 
 // ═══════════════════════════════════════════════════════
 // DARK MODE
@@ -4306,8 +4245,33 @@ function renderWizard(){
 function toggleWizCheck(el){el.classList.toggle('checked');const ico=el.querySelector('.material-icons-round');ico.textContent=el.classList.contains('checked')?'check_circle':'radio_button_unchecked';}
 
 // ═══════════════════════════════════════════════════════
-// AI COACH — see the AI COACH section further down
+// AI COACH (Claude API)
 // ═══════════════════════════════════════════════════════
+async function sendCoach(){
+  const input=document.getElementById('coach-input');
+  const msg=input.value.trim();if(!msg)return;
+  input.value='';addChatMsg(msg,'user');
+  const loader=addChatMsg('Thinking…','ai loading');
+  const context=`You are a PDIA (Problem-Driven Iterative Adaptation) coach from Harvard Kennedy School. The user's project data: Problem: "${S.problem?.title||'Not defined'}". Current state: "${S.problem?.current||'N/A'}". Desired state: "${S.problem?.desired||'N/A'}". Iterations logged: ${S.iterations.length}. Root causes identified: ${S.causes.length}. OKRs: ${S.okrs.length}. Tasks open: ${S.tasks.filter(t=>t.status!=='done').length}. Stakeholders mapped: ${S.auth.length}. Give focused, practical PDIA coaching advice. Reference the user's actual data when possible. Keep response concise (under 200 words).`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:context,messages:[{role:'user',content:msg}]})});
+    const data=await res.json();
+    loader.remove();
+    const text=data.content?.map(c=>c.text||'').join('')||'Sorry, I could not process that.';
+    addChatMsg(text,'ai');
+  }catch(err){loader.remove();addChatMsg('⚠️ Coach unavailable. Ensure Claude API is enabled for your deployment.','ai');}
+}
+function sendCoachPrompt(msg){document.getElementById('coach-input').value=msg;sendCoach();}
+function addChatMsg(text,cls){
+  const el=document.createElement('div');el.className='msg '+cls;
+  el.style.cssText='max-width:82%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;animation:fadeIn .2s ease';
+  if(cls.includes('user')){el.style.cssText+='align-self:flex-end;background:var(--grad);color:#fff;border-radius:12px 12px 3px 12px;margin-left:auto';}
+  else{el.style.cssText+='align-self:flex-start;background:var(--bg);border:1px solid var(--border2);color:var(--ink);border-radius:12px 12px 12px 3px;';}
+  el.textContent=text;
+  document.getElementById('coach-chat').appendChild(el);
+  document.getElementById('coach-chat').scrollTop=99999;
+  return el;
+}
 
 // ═══════════════════════════════════════════════════════
 // INTEGRATIONS — EXPORT
