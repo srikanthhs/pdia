@@ -771,6 +771,8 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .case-row.current{border-color:var(--blue);background:var(--blue-t)}
 .case-row-name{font-size:13.5px;font-weight:700;overflow-wrap:anywhere}
 .case-row-meta{font-size:11px;color:var(--ink4);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.case-tools{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 12px}
+.case-row-actions{display:flex;gap:4px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
 .case-chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px}
 .case-chip.active{background:var(--blue-t);color:var(--blue)}
 .case-chip.solved{background:var(--green-t);color:var(--green)}
@@ -1278,7 +1280,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <!-- Fishbone tab -->
   <div id="causes-tab-fishbone">
     <div class="card">
-      <div class="card-title"><span class="material-icons-round ico" style="color:var(--amber)">account_tree</span>Ishikawa Fishbone (6M)<span class="card-sub">Kaoru Ishikawa, 1968</span><button class="btn btn-p btn-sm" style="margin-left:auto" onclick="openModal('m-cause')"><span class="material-icons-round">add</span>Add Cause</button></div>
+      <div class="card-title"><span class="material-icons-round ico" style="color:var(--amber)">account_tree</span>Ishikawa Fishbone (6M)<span class="card-sub">Kaoru Ishikawa, 1968</span><button class="btn btn-p btn-sm" style="margin-left:auto" onclick="openCauseModal()"><span class="material-icons-round">add</span>Add Cause</button></div>
       <div id="fishbone"></div>
     </div>
   </div>
@@ -1317,7 +1319,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
           <option value="Low">Low Control</option>
         </select>
         <span class="itbl-count" id="causes-tbl-count">0 causes</span>
-        <button class="btn btn-p btn-sm" onclick="openModal('m-cause')"><span class="material-icons-round">add</span>Add</button>
+        <button class="btn btn-p btn-sm" onclick="openCauseModal()"><span class="material-icons-round">add</span>Add</button>
       </div>
       <table class="itbl" id="causes-table">
         <thead><tr>
@@ -2336,18 +2338,22 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <p style="font-size:12.5px;color:var(--ink3);margin:-8px 0 14px">Each case is one problem with its own causes, iterations, tasks and report. Everything you add is saved to the case that is open.</p>
   <div class="fr"><label class="fl" for="new-case-name">Start a new case</label>
     <div style="display:flex;gap:8px"><input id="new-case-name" class="fi" style="flex:1;min-width:0" placeholder="e.g., Low school attendance in Kuthalam block" onkeydown="if(event.key==='Enter')createCase()"/><button class="btn btn-p" onclick="createCase()"><span class="material-icons-round">add</span>Create</button></div></div>
+  <div class="case-tools">
+    <button class="btn btn-g btn-sm" onclick="loadExampleCase()"><span class="material-icons-round">school</span>Load worked example</button>
+    <label class="btn btn-g btn-sm" style="cursor:pointer"><span class="material-icons-round">upload_file</span>Import a case file<input type="file" accept="application/json,.json" hidden onchange="importCaseFile(this)"></label>
+  </div>
   <div class="fl" style="margin-top:6px">All cases</div>
   <div id="case-list" class="case-list"></div>
   <div class="modal-act"><button class="btn btn-g" onclick="closeM('m-cases')">Close</button></div>
 </div></div>
 
 <div class="mo" id="m-cause"><div class="modal">
-  <div class="modal-title">Add Root Cause (Ishikawa 6M)</div>
+  <div class="modal-title" id="m-cause-title">Add root cause (Ishikawa 6M)</div>
   <div class="fr"><label class="fl">Category</label><select id="c-cat" class="fs"><option value="Manpower">👥 Manpower — People & Skills</option><option value="Method">⚙️ Method — Processes</option><option value="Machine">🖥️ Machine — Technology</option><option value="Material">📦 Material — Resources</option><option value="Measurement">📏 Measurement — Data</option><option value="Milieu">🌍 Milieu — Context</option></select></div>
   <div class="fr"><label class="fl">Root Cause *</label><input id="c-text" class="fi" placeholder="e.g., Teachers lack structured reading pedagogy training"/></div>
   <div class="fr"><label class="fl">Evidence</label><textarea id="c-ev" class="ft" placeholder="Evidence supporting this as a root cause…"></textarea></div>
   <div class="fr"><label class="fl">Controllability</label><select id="c-ctrl" class="fs"><option value="High">High — within our control</option><option value="Medium">Medium — partial influence</option><option value="Low">Low — external factor</option></select></div>
-  <div class="modal-act"><button class="btn btn-g" onclick="closeM('m-cause')">Cancel</button><button class="btn btn-p" onclick="saveCause()"><span class="material-icons-round">save</span>Add</button></div>
+  <div class="modal-act"><button class="btn btn-g" id="m-cause-del" hidden onclick="deleteEditingCause()" style="margin-right:auto;color:var(--red)"><span class="material-icons-round">delete</span>Delete</button><button class="btn btn-g" onclick="_editCauseId=null;closeM('m-cause')">Cancel</button><button class="btn btn-p" id="m-cause-save" onclick="saveCause()"><span class="material-icons-round">save</span>Add</button></div>
 </div></div>
 
 <div class="mo" id="m-iter"><div class="modal">
@@ -2583,7 +2589,7 @@ async function loadAll(){
   S.pdca=await DB.getSingle('pdca')||{};loadPdca();
   S.bsc=await DB.getSingle('bsc')||{fin:[],cus:[],pro:[],lea:[]};renderBsc();
   S.swot=await DB.getSingle('swot')||{s:[],w:[],o:[],t:[]};renderSwot();
-  S.whys=await DB.getSingle('whys')||[];renderWhys();
+  {const w=await DB.getSingle('whys');S.whys=Array.isArray(w)?w:w?[0,1,2,3,4].map(i=>w[i]||''):[];}renderWhys();
   S.auth=await DB.getAll('auth');renderAuth();
   S.tasks=await DB.getAll('tasks');renderTasks();
   S.goals=await DB.getAll('goals');renderGoals();
@@ -2790,6 +2796,120 @@ function renderMethods(){
 }
 
 // ═══════════════════════════════════════════════════════
+// CASE FILES — export, import, worked example, rename, delete
+// ═══════════════════════════════════════════════════════
+const CASE_COLS=['causes','iterations','okrs','ogsm','toc','auth','tasks','goals','followups','notes','leverage'];
+const CASE_SINGLES={problem:'problem',smart:'smart',logicModel:'lm',pdca:'pdca',bsc:'bsc',swot:'swot',whys:'whys',eisenhower:'eisenhower',cynefin:'cynefin',iceberg:'iceberg',cld:'cld'};
+const stripMeta=o=>{if(!o||typeof o!=='object'||Array.isArray(o))return o;const{id,createdAt,u,...rest}=o;return rest;};
+function caseToJSON(){
+  const data={};
+  CASE_COLS.forEach(c=>data[c]=(S[c]||[]).map(stripMeta));
+  Object.keys(CASE_SINGLES).forEach(k=>{if(S[k]!=null)data[k]=stripMeta(S[k]);});
+  return{app:'problem-solving-lab',version:1,name:currentCase().name,exportedAt:new Date().toISOString(),data};
+}
+function exportCase(){
+  const blob=new Blob([JSON.stringify(caseToJSON(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=(currentCase().name||'case').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-').slice(0,60)+'.json';
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+  toast('✅ Case saved as a file');
+}
+async function importCaseData(obj,nameOverride){
+  const d=obj?.data;if(!d){toast('⚠️ That file is not a Problem Solving Lab case');return;}
+  const caseId=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const row=await DB.add('cases',{caseId,name:nameOverride||obj.name||'Imported case',status:'active'});
+  S.cases.push(row);
+  const prev=CURRENT_CASE;CURRENT_CASE=caseId;
+  try{
+    for(const c of CASE_COLS)for(const item of d[c]||[])await DB.add(c,stripMeta(item));
+    for(const[k,key]of Object.entries(CASE_SINGLES))if(d[k]!=null)await DB.set(key,stripMeta(d[k]));
+  }catch(err){CURRENT_CASE=prev;console.error(err);toast('⚠️ Could not save the case: '+(err?.code||err?.message));return;}
+  await switchCase(caseId);
+}
+function importCaseFile(input){
+  const f=input.files?.[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async()=>{try{await importCaseData(JSON.parse(r.result));toast('✅ Case imported');}catch{toast('⚠️ Could not read that file');}input.value='';};
+  r.readAsText(f);
+}
+async function renameCase(caseId){
+  const c=S.cases.find(x=>x.caseId===caseId);if(!c)return;
+  const name=prompt('New name for this case',c.name||'');if(!name||!name.trim())return;
+  await saveCaseMeta(caseId,{name:name.trim()});renderWorkflow();
+}
+async function deleteCase(caseId){
+  const c=S.cases.find(x=>x.caseId===caseId);if(!c)return;
+  if(!confirm(`Delete "${c.name}" and everything in it? This cannot be undone.`))return;
+  const prev=CURRENT_CASE;CURRENT_CASE=caseId;
+  try{
+    for(const col of CASE_COLS){const rows=await DB.getAll(col);for(const r of rows)await DB.del(col,r.id);if(window.__useLocalMode){try{localStorage.removeItem('p3_'+cn(col));}catch{}}}
+    for(const key of Object.values(CASE_SINGLES)){
+      if(window.__useLocalMode){try{localStorage.removeItem('p3_s_'+cn(key));}catch{}}
+      else{const s=await window.__fb.getDocs(fcol(cn(key)+'_s'));for(const d of s.docs)await window.__fb.deleteDoc(fdoc(cn(key)+'_s',d.id));}
+    }
+  }finally{CURRENT_CASE=prev;}
+  if(!c.virtual&&c.id)await DB.del('cases',c.id);
+  S.cases=S.cases.filter(x=>x.caseId!==caseId);
+  toast('Case deleted');
+  if(caseId===CURRENT_CASE){await loadCases();await switchCase(S.cases[0]?.caseId||'default');}else{await loadCases();}
+}
+async function loadExampleCase(){
+  toast('Loading the worked example…');
+  await importCaseData(EXAMPLE_CASE);
+  toast('✅ Worked example loaded. Follow the steps from 1 to 8.',6000);
+}
+const EXAMPLE_CASE={app:'problem-solving-lab',version:1,name:'Example: Low school attendance (Grades 6–8)',data:{
+  problem:{title:'Low school attendance in Grades 6–8 across a rural block',
+    desc:'Average daily attendance in 42 government middle schools is 72%, and one in five students misses more than 30 days a year. Learning levels are falling behind the state average.',
+    current:'72% average attendance; 19% of students absent 30+ days a year',
+    desired:'90% average attendance and under 5% chronic absence by March 2027',
+    stakeholders:'Students and parents in 42 schools; headteachers; Block Education Officer; School Management Committees; panchayat presidents',
+    evidence:'EMIS attendance data 2025–26; headteacher survey (42 schools); 3 parent focus groups',
+    timeline:'November 2026 to March 2027'},
+  smart:{s:'Raise attendance of Grade 6–8 students in the block\'s 42 government schools',m:'Average daily attendance from 72% to 90%; chronic absence from 19% to under 5%',a:'Comparable blocks in the district reached 88–92% with follow-up and transport',r:'Attendance is the first condition for learning recovery in the block plan',t:'By 31 March 2027, reviewed monthly'},
+  cynefin:{domain:'complex'},
+  iceberg:{events:'18 of 40 students absent in a Grade 7 class on a Monday in November',
+    patterns:'Absence rises every harvest season (Oct–Nov, Feb–Mar) and after festivals; worst in villages more than 5 km from school',
+    structures:'Families depend on children for farm work at peak season; no bus on two long routes; schools do not follow up absences until the monthly review',
+    models:'"Middle school does not lead to a job, so earning now matters more" (parents); "Absence is the family\'s problem, not ours" (some schools)'},
+  cld:{vars:[{id:'v1',name:'Attendance'},{id:'v2',name:'Learning'},{id:'v3',name:'Parents\' belief that school pays off'},{id:'v4',name:'Child farm work'},{id:'v5',name:'Household income pressure'},{id:'v6',name:'Teacher follow-up of absentees'}],
+    links:[{id:'l1',from:'v1',to:'v2',sign:'+',delay:true},{id:'l2',from:'v2',to:'v3',sign:'+',delay:true},{id:'l3',from:'v3',to:'v1',sign:'+'},
+      {id:'l4',from:'v5',to:'v4',sign:'+'},{id:'l5',from:'v4',to:'v1',sign:'-'},{id:'l6',from:'v1',to:'v4',sign:'-'},
+      {id:'l7',from:'v1',to:'v6',sign:'-'},{id:'l8',from:'v6',to:'v1',sign:'+'}]},
+  causes:[
+    {category:'Milieu',text:'Harvest season pulls children into farm work',evidence:'Absence peaks in Oct–Nov and Feb–Mar in EMIS data',controllability:'Low'},
+    {category:'Method',text:'No follow-up when a child is absent three days in a row',evidence:'Only 6 of 42 schools call parents',controllability:'High'},
+    {category:'Manpower',text:'Parents see little value in Grade 6–8 learning',evidence:'Focus groups: "they learn nothing useful there"',controllability:'Medium'},
+    {category:'Material',text:'No school bus on two long routes',evidence:'11 villages are more than 5 km from the nearest middle school',controllability:'Medium'},
+    {category:'Measurement',text:'Attendance reviewed only once a month, too late to act',evidence:'Block review meeting is monthly; no weekly report',controllability:'High'},
+    {category:'Machine',text:'Attendance app not used where there is no phone signal',evidence:'15 schools record on paper and upload late',controllability:'Medium'}],
+  whys:['Why are students absent? Many are working on family farms on weekdays.','Why do families keep them home? They need labour at peak season and see little payoff from school.','Why little payoff? Parents do not see learning progress, and nobody from school contacts them.','Why no contact? Schools have no routine or responsibility for following up absences.','Why no routine? The block reviews attendance monthly and only as a number, not by student.'],
+  auth:[
+    {name:'Block Education Officer',org:'Education Department',support:'champion',authority:'Can issue follow-up instructions to all 42 schools',strategy:'Weekly 10-minute attendance review with headteachers'},
+    {name:'Headteachers (42 schools)',org:'Government middle schools',support:'supportive',authority:'Run daily attendance and parent contact',strategy:'Give a simple 3-day follow-up routine and recognise improvers'},
+    {name:'Panchayat presidents',org:'Local government',support:'neutral',authority:'Influence families and can fund transport',strategy:'Share village-level attendance at gram sabha'},
+    {name:'Transport contractor',org:'Private',support:'resistant',authority:'Controls bus routes',strategy:'Pilot one route with guaranteed minimum payment'}],
+  leverage:[
+    {title:'Share each child\'s monthly learning progress with parents',level:6,target:'R1: Learning → belief → attendance',effort:'medium'},
+    {title:'Make 3-day absence follow-up a rule for every school',level:5,target:'B1: Teacher follow-up loop',effort:'low'},
+    {title:'Review attendance weekly by student, not monthly by school',level:9,target:'Delay in noticing absence',effort:'low'},
+    {title:'Run a bus on the two long routes',level:10,target:'No transport',effort:'high'},
+    {title:'Increase the attendance incentive amount',level:12,target:'Household income pressure',effort:'high'}],
+  iterations:[
+    {title:'3-day follow-up calls in 5 pilot schools',hypothesis:'If teachers call parents after three days of absence, then chronic absence will fall, because families learn the school notices and cares.',prediction:'Chronic absence in pilot schools drops from 21% to 15% within 4 weeks',did:'Headteachers in 5 schools called parents of every student absent 3 days; logged reasons in a register.',learned:'Chronic absence fell to 16%. Calls worked where the teacher knew the family; farm work was the main reason given.',adapt:'Scale to 15 schools; add a short home visit for students absent 5+ days.',entry:'Willing headteachers first',status:'done'},
+    {title:'Monthly learning card for parents in 3 schools',hypothesis:'If parents see their child\'s reading and maths progress each month, then they will value school more and send children more often.',prediction:'Attendance in Grade 6 rises by 5 points over 6 weeks',did:'Teachers sent a one-page progress card home and discussed it at the SMC meeting.',learned:'Parents liked the cards; early attendance gain of 3 points, still too soon to judge.',adapt:'Continue for another 6 weeks before deciding to scale.',entry:'Schools with active SMCs',status:'learning'}],
+  tasks:[
+    {title:'Issue block circular on 3-day follow-up routine',desc:'Include call script and register format',priority:'high',status:'done',due:'2026-11-20',label:'policy',done:true},
+    {title:'Train 15 headteachers on follow-up routine',desc:'One-hour session at the cluster meeting',priority:'high',status:'inprogress',due:'2026-12-05',label:'training',done:false},
+    {title:'Set up weekly student-level attendance report',desc:'Use EMIS export; flag students absent 3+ days',priority:'medium',status:'todo',due:'2026-12-10',label:'data',done:false},
+    {title:'Meet panchayat presidents about the two bus routes',desc:'Bring village attendance figures',priority:'medium',status:'todo',due:'2026-12-15',label:'stakeholders',done:false}],
+  followups:[
+    {title:'Review pilot results with Block Education Officer',desc:'Decide on scaling to 15 schools',date:'2026-12-01',type:'review',priority:'high',done:false},
+    {title:'Check learning-card experiment at week 6',desc:'Compare Grade 6 attendance with non-pilot schools',date:'2027-01-10',type:'milestone',priority:'medium',done:false}],
+  notes:[{title:'Parent focus group, Village A',body:'Mothers said boys are needed for harvest; girls kept home to look after siblings. Suggested school timing changes during harvest.',color:'#fef9c3',label:'evidence'}]
+}};
+
+// ═══════════════════════════════════════════════════════
 // ACCOUNT — sign-in state and the one-time upload of this device's data
 // ═══════════════════════════════════════════════════════
 function renderAccount(){
@@ -2857,7 +2977,10 @@ function renderCaseUI(){
     return `<div class="case-row${cur?' current':''}">
       <div style="min-width:0;flex:1"><div class="case-row-name">${e(x.name||'Untitled case')}</div>
       <div class="case-row-meta"><span class="case-chip ${x.status==='solved'?'solved':'active'}">${x.status==='solved'?'Solved':'Active'}</span>${created?' Started '+created:''}${cur?' · Open now':''}</div></div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
+      <div class="case-row-actions">
+        <button class="btn-i" title="Rename" aria-label="Rename" onclick="renameCase('${x.caseId}')"><span class="material-icons-round" style="font-size:16px">edit</span></button>
+        ${cur?`<button class="btn-i" title="Save as a file" aria-label="Save as a file" onclick="exportCase()"><span class="material-icons-round" style="font-size:16px">download</span></button>`:''}
+        <button class="btn-i" title="Delete" aria-label="Delete" onclick="deleteCase('${x.caseId}')"><span class="material-icons-round" style="font-size:16px">delete</span></button>
         <button class="btn btn-g btn-sm" onclick="toggleCaseSolved('${x.caseId}')">${x.status==='solved'?'Reopen':'Mark solved'}</button>
         ${cur?'':`<button class="btn btn-p btn-sm" onclick="switchCase('${x.caseId}')">Open</button>`}
       </div></div>`;}).join('');
@@ -3000,7 +3123,7 @@ function initWorkspaceShell(){
       keywords:(btn.dataset.nav+' '+btn.textContent).toLowerCase()
     })),
     {type:'fn',label:'Add Task',hint:'Open quick task modal',icon:'add_task',fn:'openModal',args:['m-task'],keywords:'task add create modal'},
-    {type:'fn',label:'Add Root Cause',hint:'Open cause capture modal',icon:'account_tree',fn:'openModal',args:['m-cause'],keywords:'cause fishbone add'},
+    {type:'fn',label:'Add Root Cause',hint:'Open cause capture modal',icon:'account_tree',fn:'openCauseModal',args:[],keywords:'cause fishbone add'},
     {type:'fn',label:'Generate Report',hint:'Build the export summary',icon:'picture_as_pdf',fn:'nav',args:['report'],keywords:'report export pdf'},
     {type:'fn',label:'Schedule Follow-up',hint:'Open follow-up modal',icon:'event_repeat',fn:'openModal',args:['m-fu'],keywords:'followup schedule calendar'}
   ];
@@ -3131,12 +3254,38 @@ function renderSmart(){if(!S.smart)return;['s','m','a','r','t'].forEach(k=>sv('s
 // ═══════════════════════════════════════════════════════
 // CAUSES + WHYS
 // ═══════════════════════════════════════════════════════
+let _editCauseId=null;
+function openCauseModal(){
+  _editCauseId=null;clear(['c-text','c-ev']);
+  document.getElementById('m-cause-title').textContent='Add root cause (Ishikawa 6M)';
+  document.getElementById('m-cause-save').innerHTML='<span class="material-icons-round">save</span>Add';
+  document.getElementById('m-cause-del').hidden=true;
+  openModal('m-cause');
+}
+function editCause(id){
+  const c=S.causes.find(x=>x.id===id);if(!c)return;
+  _editCauseId=id;
+  sv('c-cat',c.category);sv('c-text',c.text);sv('c-ev',c.evidence);sv('c-ctrl',c.controllability);
+  document.getElementById('m-cause-title').textContent='Edit root cause';
+  document.getElementById('m-cause-save').innerHTML='<span class="material-icons-round">save</span>Save changes';
+  document.getElementById('m-cause-del').hidden=false;
+  openModal('m-cause');
+}
+function refreshCauseViews(){renderCauses();renderCausesTable();if(document.getElementById('causes-tab-wishbone')?.style.display!=='none')renderWishbone();updateStats();}
 async function saveCause(){
   const d={category:v('c-cat'),text:v('c-text'),evidence:v('c-ev'),controllability:v('c-ctrl')};
   if(!d.text){toast('⚠️ Enter cause');return;}
-  S.causes.push(await DB.add('causes',d));renderCauses();closeM('m-cause');clear(['c-text','c-ev']);updateStats();toast('✅ Root cause added');
+  if(_editCauseId){
+    const c=S.causes.find(x=>x.id===_editCauseId);
+    await DB.update('causes',_editCauseId,d);if(c)Object.assign(c,d);
+    _editCauseId=null;closeM('m-cause');clear(['c-text','c-ev']);refreshCauseViews();toast('✅ Root cause updated');return;
+  }
+  S.causes.push(await DB.add('causes',d));closeM('m-cause');clear(['c-text','c-ev']);refreshCauseViews();toast('✅ Root cause added');
 }
-async function delCause(id){await DB.del('causes',id);S.causes=S.causes.filter(c=>c.id!==id);renderCauses();updateStats();}
+async function deleteEditingCause(){
+  if(!_editCauseId)return;const id=_editCauseId;_editCauseId=null;closeM('m-cause');await delCause(id);refreshCauseViews();toast('Root cause deleted');
+}
+async function delCause(id){await DB.del('causes',id);S.causes=S.causes.filter(c=>c.id!==id);renderCauses();renderCausesTable();if(document.getElementById('causes-tab-wishbone')?.style.display!=='none')renderWishbone();updateStats();}
 function renderCauses(){
   const cats=['Manpower','Method','Machine','Material','Measurement','Milieu'];
   const icons={Manpower:'👥',Method:'⚙️',Machine:'🖥️',Material:'📦',Measurement:'📏',Milieu:'🌍'};
@@ -3145,7 +3294,7 @@ function renderCauses(){
   if(!S.causes.length){el.innerHTML='<div class="empty"><span class="material-icons-round">account_tree</span><h3>No root causes yet</h3><p>Add causes to build your fishbone</p></div>';return;}
   el.innerHTML=cats.map(cat=>{
     const items=S.causes.filter(c=>c.category===cat);if(!items.length)return'';
-    return`<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">${icons[cat]} ${cat}</div>${items.map(c=>`<div style="background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:9px"><div style="flex:1"><div style="font-size:13px;font-weight:600">${e(c.text)}</div>${c.evidence?`<div style="font-size:11.5px;color:var(--ink4);margin-top:2px">${e(c.evidence)}</div>`:''}</div><span class="chip ${cc[c.controllability]||'cgr'}">${c.controllability}</span><button class="btn-i" onclick="delCause('${c.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div>`).join('')}</div>`;
+    return`<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">${icons[cat]} ${cat}</div>${items.map(c=>`<div class="cause-card" style="background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:9px"><div style="flex:1;min-width:0;cursor:pointer" onclick="editCause('${c.id}')" title="Tap to edit"><div style="font-size:13px;font-weight:600">${e(c.text)}</div>${c.evidence?`<div style="font-size:11.5px;color:var(--ink4);margin-top:2px">${e(c.evidence)}</div>`:''}</div><span class="chip ${cc[c.controllability]||'cgr'}">${c.controllability}</span><button class="btn-i" onclick="editCause('${c.id}')" aria-label="Edit cause"><span class="material-icons-round" style="font-size:14px">edit</span></button><button class="btn-i" onclick="delCause('${c.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div>`).join('')}</div>`;
   }).join('');
 }
 async function saveWhys(quiet=false){const vals=[...document.querySelectorAll('.why-input')].map(el=>el.value);S.whys=vals;await DB.set('whys',vals);if(quiet)setAutosaveState('5 Whys draft saved');else{setAutosaveState('5 Whys saved');toast('✅ 5 Whys saved');}}
@@ -4295,7 +4444,7 @@ function renderCausesTable(){
     <td class="td-edit" data-id="${c.id}" data-field="text" contenteditable="false" ondblclick="editCauseCell(this)" onblur="saveCauseCell(this)">${e(c.text||'')}</td>
     <td class="td-edit" data-id="${c.id}" data-field="evidence" contenteditable="false" ondblclick="editCauseCell(this)" onblur="saveCauseCell(this)" style="font-size:11.5px;color:var(--ink4)">${e(c.evidence||'—')}</td>
     <td><span style="font-weight:700;color:${ctrlColor[c.controllability]||'var(--ink4)'}">${c.controllability||'—'}</span></td>
-    <td><div class="row-actions"><button class="btn-i" onclick="delCause('${c.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div></td>
+    <td><div class="row-actions"><button class="btn-i" onclick="editCause('${c.id}')" aria-label="Edit cause"><span class="material-icons-round" style="font-size:14px">edit</span></button><button class="btn-i" onclick="delCause('${c.id}')"><span class="material-icons-round" style="font-size:14px">delete</span></button></div></td>
   </tr>`).join('');
 }
 function filterCausesTable(){renderCausesTable();}
