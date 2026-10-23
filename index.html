@@ -17,7 +17,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp, writeBatch } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   const firebaseConfig = {
   apiKey: "AIzaSyAT7nz8ykMO-P08fhb7lWsoh93vjcH8BsU",
   authDomain: "mydpdia-6f961.firebaseapp.com",
@@ -26,23 +27,45 @@
   messagingSenderId: "360662145036",
   appId: "1:360662145036:web:98de35bd80659ed7e43629",
   measurementId: "G-9LP4D07CQV"
-};  if (!window.__fbReady) {
-  window.__useLocalMode = true;
+};
+  window.__fbLoaded = true;
+  const start = (local) => {
+    if (window.__fbReady) return;
+    window.__useLocalMode = local; window.__fbReady = true;
+    document.getElementById('signin-screen')?.setAttribute('hidden', '');
+    window.dispatchEvent(new Event("firebase-ready"));
+  };
   try {
-    if (firebaseConfig.apiKey === "FIREBASE_API_KEY") throw new Error("demo");
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     window.__db = getFirestore(app);
-    window.__fb = { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp };
-    window.__useLocalMode = false;
-  } catch(e) { console.warn("Local mode — data stored in localStorage"); }
-  window.__fbReady = true;
-  window.dispatchEvent(new Event("firebase-ready"));
-  }
+    window.__fb = { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp, writeBatch };
+    // Each signed-in person gets their own data under users/{uid}/...
+    window.__signIn = async () => {
+      try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+      catch (e) {
+        const msg = document.getElementById('signin-error');
+        if (msg) msg.textContent = e.code === 'auth/unauthorized-domain'
+          ? 'Sign-in is not enabled for this website yet. Add it under Authorized domains in Firebase.'
+          : e.code === 'auth/operation-not-allowed' ? 'Google sign-in is turned off in Firebase. Turn it on under Authentication.'
+          : e.code === 'auth/popup-closed-by-user' ? '' : 'Could not sign in (' + (e.code || e.message) + ').';
+      }
+    };
+    window.__signOut = async () => { await signOut(auth); try { localStorage.removeItem('p3_auth_choice'); } catch {} location.reload(); };
+    window.__useDevice = () => { try { localStorage.setItem('p3_auth_choice', 'device'); } catch {} start(true); };
+    onAuthStateChanged(auth, (user) => {
+      if (user) { window.__uid = user.uid; window.__user = { name: user.displayName, email: user.email, photo: user.photoURL }; start(false); return; }
+      if (window.__fbReady) return;
+      let choice = null; try { choice = localStorage.getItem('p3_auth_choice'); } catch {}
+      if (choice === 'device') { start(true); return; }
+      document.getElementById('signin-screen')?.removeAttribute('hidden');
+    });
+  } catch (e) { console.warn("Firebase unavailable, using this device's storage", e); start(true); }
 </script>
 <script>
   // If the Firebase SDK can't load (offline, blocked CDN), start in local mode instead of hanging.
   setTimeout(function(){
-    if (window.__fbReady) return;
+    if (window.__fbReady || window.__fbLoaded) return;
     window.__useLocalMode = true; window.__fbReady = true;
     window.dispatchEvent(new Event("firebase-ready"));
   }, 5000);
@@ -612,6 +635,20 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 
 
 
+
+/* ── SIGN-IN ── */
+.signin-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px max(16px,env(safe-area-inset-left)) 24px max(16px,env(safe-area-inset-right))}
+.signin-screen[hidden]{display:none}
+.signin-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rxl);box-shadow:var(--shm);padding:32px 28px;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.signin-title{font-family:var(--display);font-weight:400;font-size:28px;letter-spacing:-.3px;margin-top:4px}
+.signin-sub{font-size:13.5px;color:var(--ink3);max-width:30ch;margin-bottom:8px}
+.signin-card .btn{width:100%;justify-content:center;min-height:44px}
+.signin-note{font-size:11.5px;color:var(--ink4)}
+.signin-error{font-size:12px;color:var(--red);min-height:1em}
+.account-btn{display:inline-flex;align-items:center;gap:6px;height:38px;min-width:38px;padding:0 10px;border:none;border-radius:10px;background:var(--bg);color:var(--ink3);cursor:pointer;font-family:var(--font);font-size:12px;font-weight:600;flex-shrink:0}
+.account-btn:hover{background:var(--border2);color:var(--ink)}
+.account-btn img{width:26px;height:26px;border-radius:50%;margin:0 -4px}
+@media(max-width:600px){.account-lbl{display:none}.account-btn{padding:0 8px}}
 /* ── CASES + WORKFLOW ── */
 .case-card{display:flex;align-items:center;gap:9px;margin:2px 8px 10px;padding:10px 10px;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--bg);cursor:pointer;font-family:var(--font);color:var(--ink);transition:var(--anim)}
 .case-card:hover{border-color:var(--blue);background:var(--blue-t)}
@@ -708,6 +745,17 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <body>
 
 <!-- ── APPBAR ── -->
+<div class="signin-screen" id="signin-screen" hidden>
+  <div class="signin-card">
+    <div class="logo-mark" style="width:48px;height:48px;font-size:24px;border-radius:14px"><span class="material-icons-round" style="font-size:26px">psychology_alt</span></div>
+    <h1 class="signin-title">PDIA Workspace</h1>
+    <p class="signin-sub">Sign in to keep your cases private and in sync on your phone and computer.</p>
+    <button class="btn btn-p signin-google" onclick="window.__signIn()"><span class="material-icons-round">login</span>Sign in with Google</button>
+    <button class="btn btn-g" onclick="window.__useDevice()">Continue without an account</button>
+    <p class="signin-note">Without an account, your work is saved only in this browser.</p>
+    <p class="signin-error" id="signin-error" role="alert"></p>
+  </div>
+</div>
 <header class="appbar">
   <button class="mobile-nav-btn" onclick="toggleMobileNav()" aria-label="Open navigation"><span class="material-icons-round">menu</span></button>
   <div class="logo">
@@ -715,6 +763,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
     <div><div>PDIA Workspace</div><div class="logo-hks">HARVARD KENNEDY SCHOOL · V6 PRO</div></div>
   </div>
   <div class="appbar-sp"></div>
+  <button class="account-btn" id="account-btn" aria-label="Account"></button>
   <button class="command-btn" onclick="openCommandPalette()" aria-label="Search sections"><span class="material-icons-round" style="font-size:20px">search</span></button>
   <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">
     <span class="material-icons-round" style="font-size:20px">notifications</span>
@@ -2243,6 +2292,8 @@ const AUTOSAVE_DELAY=900;
 // ═══════════════════════════════════════════════════════
 // Each case keeps its own collections. The first case ('default') uses the original
 // unprefixed names so existing data stays where it is.
+const fcol=name=>window.__fb.collection(window.__db,'users',window.__uid,name);
+const fdoc=(name,id)=>window.__fb.doc(window.__db,'users',window.__uid,name,id);
 let CURRENT_CASE='default';
 try{CURRENT_CASE=localStorage.getItem('p3_current_case')||'default';}catch{}
 const cn=col=>(col==='cases'||CURRENT_CASE==='default')?col:`case_${CURRENT_CASE}_${col}`;
@@ -2254,34 +2305,34 @@ const DB={
       arr.push(item);localStorage.setItem('p3_'+col,JSON.stringify(arr));return item;
     }
     const{addDoc,collection,serverTimestamp}=window.__fb;
-    const ref=await addDoc(collection(window.__db,col),{...data,createdAt:serverTimestamp()});
+    const ref=await addDoc(fcol(col),{...data,createdAt:serverTimestamp()});
     return{id:ref.id,...data,createdAt:new Date().toISOString()};
   },
   async getAll(col){col=cn(col);
     if(window.__useLocalMode)return JSON.parse(localStorage.getItem('p3_'+col)||'[]');
     const{getDocs,collection}=window.__fb;
-    try{const s=await getDocs(collection(window.__db,col));return s.docs.map(d=>({id:d.id,...d.data()}));}catch{return[];}
+    try{const s=await getDocs(fcol(col));return s.docs.map(d=>({id:d.id,...d.data()}));}catch{return[];}
   },
   async set(key,data){key=cn(key);
     if(window.__useLocalMode){localStorage.setItem('p3_s_'+key,JSON.stringify(data));return data;}
     const{addDoc,collection,getDocs,updateDoc,doc,serverTimestamp}=window.__fb;
-    const s=await getDocs(collection(window.__db,key+'_s'));
-    if(s.empty)await addDoc(collection(window.__db,key+'_s'),{...data,u:serverTimestamp()});
-    else await updateDoc(doc(window.__db,key+'_s',s.docs[0].id),{...data,u:serverTimestamp()});
+    const s=await getDocs(fcol(key+'_s'));
+    if(s.empty)await addDoc(fcol(key+'_s'),{...data,u:serverTimestamp()});
+    else await updateDoc(fdoc(key+'_s',s.docs[0].id),{...data,u:serverTimestamp()});
     return data;
   },
   async getSingle(key){key=cn(key);
     if(window.__useLocalMode)return JSON.parse(localStorage.getItem('p3_s_'+key)||'null');
     const{getDocs,collection}=window.__fb;
-    try{const s=await getDocs(collection(window.__db,key+'_s'));if(s.empty)return null;return{id:s.docs[0].id,...s.docs[0].data()};}catch{return null;}
+    try{const s=await getDocs(fcol(key+'_s'));if(s.empty)return null;return{id:s.docs[0].id,...s.docs[0].data()};}catch{return null;}
   },
   async del(col,id){col=cn(col);
     if(window.__useLocalMode){const a=JSON.parse(localStorage.getItem('p3_'+col)||'[]');localStorage.setItem('p3_'+col,JSON.stringify(a.filter(i=>i.id!==id)));return;}
-    const{deleteDoc,doc}=window.__fb;try{await deleteDoc(doc(window.__db,col,id));}catch{}
+    const{deleteDoc,doc}=window.__fb;try{await deleteDoc(fdoc(col,id));}catch{}
   },
   async update(col,id,data){col=cn(col);
     if(window.__useLocalMode){const a=JSON.parse(localStorage.getItem('p3_'+col)||'[]');const i=a.findIndex(x=>x.id===id);if(i>=0){a[i]={...a[i],...data};localStorage.setItem('p3_'+col,JSON.stringify(a));}return;}
-    const{updateDoc,doc}=window.__fb;try{await updateDoc(doc(window.__db,col,id),data);}catch{}
+    const{updateDoc,doc}=window.__fb;try{await updateDoc(fdoc(col,id),data);}catch{}
   }
 };
 
@@ -2294,12 +2345,14 @@ window.addEventListener('firebase-ready',async()=>{
   if(!window.__useLocalMode){
     try{
       const{getDocs,collection}=window.__fb;
-      await Promise.race([getDocs(collection(window.__db,'cases')),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))]);
+      await Promise.race([getDocs(fcol('cases')),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))]);
     }catch(err){
       console.warn('Firestore unavailable, using this device\'s storage:',err?.code||err?.message);
       window.__useLocalMode=true;window.__fbError=err?.code||err?.message||'unavailable';
     }
   }
+  if(!window.__useLocalMode)await uploadDeviceData();
+  renderAccount();
   const b=document.getElementById('db-badge');
   const fbs=document.getElementById('fb-int-status');
   if(window.__useLocalMode){
@@ -2341,6 +2394,44 @@ async function loadAll(){
   S.notes=await DB.getAll('notes');renderNotes();
   S.eisenhower=await DB.getSingle('eisenhower')||{q1:[],q2:[],q3:[],q4:[]};renderEisenhower();
   updateStats();updateDashActivity();populateTaskIterLinks();
+}
+
+// ═══════════════════════════════════════════════════════
+// ACCOUNT — sign-in state and the one-time upload of this device's data
+// ═══════════════════════════════════════════════════════
+function renderAccount(){
+  const el=document.getElementById('account-btn');if(!el)return;
+  if(window.__uid){
+    const u=window.__user||{};
+    el.innerHTML=u.photo?`<img src="${e(u.photo)}" alt="" referrerpolicy="no-referrer">`:`<span class="material-icons-round">account_circle</span>`;
+    el.title='Signed in as '+(u.email||u.name||'you')+'. Tap to sign out.';
+    el.onclick=()=>{if(confirm('Sign out of '+(u.email||'your account')+'?'))window.__signOut();};
+  }else{
+    el.innerHTML='<span class="material-icons-round">login</span><span class="account-lbl">Sign in</span>';
+    el.title='Sign in to sync your cases across devices';
+    el.onclick=()=>{try{localStorage.removeItem('p3_auth_choice');}catch{}location.reload();};
+  }
+}
+async function uploadDeviceData(){
+  let keys=[];
+  try{keys=Object.keys(localStorage).filter(k=>k.startsWith('p3_')&&!['p3_current_case','p3_testcase_loaded','p3_auth_choice','p3_prob_log'].includes(k)&&!k.startsWith('p3_uploaded_'));}catch{return;}
+  if(!keys.length)return;
+  try{if(localStorage.getItem('p3_uploaded_'+window.__uid))return;}catch{}
+  try{
+    const existing=await window.__fb.getDocs(fcol('cases'));
+    if(!existing.empty){localStorage.setItem('p3_uploaded_'+window.__uid,'skipped');return;}
+    const{writeBatch,serverTimestamp}=window.__fb;
+    let batch=writeBatch(window.__db),n=0;
+    const put=async(colName,data)=>{batch.set(fdoc(colName,data.id||(Date.now().toString(36)+Math.random().toString(36).slice(2))),data);if(++n%400===0){await batch.commit();batch=writeBatch(window.__db);}};
+    for(const k of keys){
+      const val=JSON.parse(localStorage.getItem(k)||'null');if(val==null)continue;
+      if(k.startsWith('p3_s_'))await put(k.slice(5)+'_s',{...val,u:serverTimestamp()});
+      else if(Array.isArray(val))for(const item of val)await put(k.slice(3),item);
+    }
+    await batch.commit();
+    localStorage.setItem('p3_uploaded_'+window.__uid,'done');
+    setTimeout(()=>toast('☁️ Copied the cases saved on this device to your account.',6000),1200);
+  }catch(err){console.warn('Upload of device data failed',err);}
 }
 
 // ═══════════════════════════════════════════════════════
