@@ -2289,10 +2289,22 @@ const DB={
 // INIT
 // ═══════════════════════════════════════════════════════
 window.addEventListener('firebase-ready',async()=>{
+  // Firebase can initialise even when Firestore itself is switched off or blocked by its rules.
+  // Probe it once; if it can't be read, save to this device instead of failing silently.
+  if(!window.__useLocalMode){
+    try{
+      const{getDocs,collection}=window.__fb;
+      await Promise.race([getDocs(collection(window.__db,'cases')),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))]);
+    }catch(err){
+      console.warn('Firestore unavailable, using this device\'s storage:',err?.code||err?.message);
+      window.__useLocalMode=true;window.__fbError=err?.code||err?.message||'unavailable';
+    }
+  }
   const b=document.getElementById('db-badge');
   const fbs=document.getElementById('fb-int-status');
   if(window.__useLocalMode){
     b.textContent='💾 Local';b.className='badge b-local';
+    if(window.__fbError){b.title='Firebase is not reachable ('+window.__fbError+'). Data is saved on this device only.';setTimeout(()=>toast('⚠️ Cloud sync is off. Your work is saved on this device only.',6000),1500);}
     if(fbs)fbs.innerHTML='<div class="int-status-dot" style="background:var(--amber)"></div>Not Connected — using localStorage';
   } else {
     b.textContent='🔥 Firebase';
@@ -2371,7 +2383,9 @@ async function createCase(){
   const name=v('new-case-name').trim();
   if(!name){toast('⚠️ Give the case a short name, for example the problem in a few words');return;}
   const caseId=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-  const row=await DB.add('cases',{caseId,name,status:'active'});
+  let row;
+  try{row=await DB.add('cases',{caseId,name,status:'active'});}
+  catch(err){console.error(err);toast('⚠️ Could not save the case: '+(err?.code||err?.message||'unknown error'),6000);return;}
   S.cases.push(row);
   await switchCase(caseId,true);
   sv('p-title',name);
