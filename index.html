@@ -923,6 +923,46 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 .rpt-quads{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px}
 .rpt-quads div{border:1px solid var(--border2);border-radius:6px;padding:6px 8px}
 
+/* ── SIMPLE LAYOUT ── */
+.home-simple{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.home-card{margin:0}
+.home-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:10px}
+.home-h .material-icons-round{font-size:18px;color:var(--blue)}
+.home-title{font-size:16px;font-weight:700;line-height:1.35;margin-bottom:8px}
+.home-gap{display:flex;gap:8px;align-items:stretch;font-size:12.5px;margin-bottom:8px}
+.home-gap>div{flex:1;background:var(--bg);border-radius:8px;padding:8px 10px;min-width:0}
+.home-gap>div span{display:block;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ink4);margin-bottom:2px}
+.home-gap>.material-icons-round{align-self:center;color:var(--ink4);font-size:18px}
+.home-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.home-row:last-child{border-bottom:0}
+.home-row-t{flex:1;min-width:0;font-size:13px}
+.home-date{font-size:11.5px;font-weight:600;color:var(--ink4);white-space:nowrap}
+.home-date.late{color:var(--red)}.home-date.today{color:var(--amber)}
+.home-more{display:block;margin:16px auto 0;font-size:12.5px}
+#dash-classic{margin-top:16px}
+.wf-bar.compact .wf-next{padding:6px 8px 6px 12px}
+.wf-bar.compact .wf-next-s{display:none}
+.wf-bar.compact .wf-next .btn{padding:6px 12px}
+.tab-pills{max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tab-pills::-webkit-scrollbar{display:none}
+.tab-pill{white-space:nowrap;flex-shrink:0}
+@media(max-width:900px){.card-sub{display:none}}
+.wf-bar.compact .wf-top{display:none}
+.wf-bar.compact{padding-top:10px;padding-bottom:10px}
+.nav-more{margin-top:6px}
+.nav-more-sum{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;padding-right:12px}
+.nav-more-sum::-webkit-details-marker{display:none}
+.nav-more-sum .material-icons-round{font-size:18px;transition:transform .2s}
+.nav-more[open] .nav-more-sum .material-icons-round{transform:rotate(180deg)}
+.nav-sub{font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;padding:10px 16px 4px}
+.health-pill,#db-badge{display:none!important}
+#db-badge.b-local{display:inline-flex!important}
+@media(max-width:900px){.home-simple{grid-template-columns:1fr}}
+@media(max-width:900px){
+  .search-btn,.theme-btn{display:none!important}
+  .mobile-nav-btn{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -943,12 +983,12 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <button class="mobile-nav-btn" onclick="toggleMobileNav()" aria-label="Open navigation"><span class="material-icons-round">menu</span></button>
   <div class="logo">
     <div class="logo-mark"><span class="material-icons-round" style="font-size:17px">psychology_alt</span></div>
-    <div><div>Problem Solving Lab</div><div class="logo-hks">SYSTEMS THINKING · PDIA · SCIENTIFIC METHOD</div></div>
+    <div>Problem Solving Lab</div>
   </div>
   <div class="appbar-sp"></div>
   <button class="account-btn" id="account-btn" aria-label="Account"></button>
   <button class="command-btn theme-btn" onclick="toggleTheme()" aria-label="Switch light or dark mode" title="Light / dark mode"><span class="material-icons-round" data-theme-icon>dark_mode</span></button>
-  <button class="command-btn" onclick="openCommandPalette()" aria-label="Search sections"><span class="material-icons-round" style="font-size:20px">search</span></button>
+  <button class="command-btn search-btn" onclick="openCommandPalette()" aria-label="Search sections"><span class="material-icons-round" style="font-size:20px">search</span></button>
   <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">
     <span class="material-icons-round" style="font-size:20px">notifications</span>
     <span class="notif-dot" id="notif-dot" style="display:none"></span>
@@ -974,8 +1014,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <aside class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
   <div class="mobile-drawer-header">
     <div>
-      <div class="mobile-drawer-title">Navigate Workspace</div>
-      <div class="mobile-drawer-sub">All PDIA sections stay reachable on mobile.</div>
+      <div class="mobile-drawer-title">Menu</div>
     </div>
     <button class="btn-i edit" onclick="toggleMobileNav(false)" aria-label="Close navigation"><span class="material-icons-round">close</span></button>
   </div>
@@ -996,9 +1035,9 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 <!-- ── SIDENAV ── -->
 <nav class="sidenav">
   <button class="case-card" onclick="openCases()"><span class="material-icons-round">folder_open</span><span style="min-width:0;flex:1;text-align:left"><span class="case-card-name" data-case-name>My first case</span><span class="case-card-meta" data-case-meta>Active</span></span><span class="material-icons-round" style="font-size:18px">unfold_more</span></button>
-  <button class="nav-item active" onclick="nav('dashboard')" data-nav="dashboard"><span class="material-icons-round">dashboard</span>Dashboard</button>
+  <button class="nav-item active" onclick="nav('dashboard')" data-nav="dashboard"><span class="material-icons-round">home</span>Home</button>
 
-  <div class="nav-section" style="margin-top:6px">Problem-solving steps</div>
+  <div class="nav-section" style="margin-top:6px">Your 8 steps</div>
   <button class="nav-item" onclick="nav('problem')" data-nav="problem"><span class="step-badge" data-step-badge="problem"></span><span style="flex:1">Define the problem</span></button>
   <button class="nav-item" onclick="nav('approach')" data-nav="approach"><span class="step-badge" data-step-badge="approach"></span><span style="flex:1">Choose your approach</span></button>
   <button class="nav-item" onclick="nav('system')" data-nav="system"><span class="step-badge" data-step-badge="system"></span><span style="flex:1">See the system</span></button>
@@ -1008,21 +1047,22 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <button class="nav-item" onclick="nav('tasks')" data-nav="tasks"><span class="step-badge" data-step-badge="tasks"></span><span style="flex:1">Act and follow up</span> <span class="nav-count" id="nc-tasks">0</span></button>
   <button class="nav-item" onclick="nav('report')" data-nav="report"><span class="step-badge" data-step-badge="report"></span><span style="flex:1">Learn and report</span></button>
 
-  <div class="nav-section" style="margin-top:6px">More tools</div>
-  <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="material-icons-round">groups</span>Map who can help</button>
-  <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="material-icons-round">event_repeat</span>Follow-ups <span class="nav-count warn" id="nc-fu">0</span></button>
-  <button class="nav-item" onclick="nav('review')" data-nav="review"><span class="material-icons-round">rate_review</span>Weekly review</button>
-  <button class="nav-item" onclick="nav('goals')" data-nav="goals"><span class="material-icons-round">track_changes</span>Goals</button>
-  <button class="nav-item" onclick="nav('frameworks')" data-nav="frameworks"><span class="material-icons-round">science</span>OKR · ToC · OGSM</button>
-  <button class="nav-item" onclick="nav('scorecard')" data-nav="scorecard"><span class="material-icons-round">analytics</span>BSC · SWOT</button>
-  <button class="nav-item" onclick="nav('matrix')" data-nav="matrix"><span class="material-icons-round">grid_view</span>Eisenhower matrix</button>
-
-  <div class="nav-section" style="margin-top:6px">Help</div>
-  <button class="nav-item" onclick="nav('methods')" data-nav="methods"><span class="material-icons-round">menu_book</span>Methods library</button>
-  <button class="nav-item" onclick="nav('coach')" data-nav="coach"><span class="material-icons-round">smart_toy</span>AI coach</button>
-  <button class="nav-item" onclick="nav('notes')" data-nav="notes"><span class="material-icons-round">sticky_note_2</span>Notes</button>
-  <button class="nav-item" onclick="nav('guide')" data-nav="guide"><span class="material-icons-round">school</span>Guide &amp; walkthrough</button>
-  <button class="nav-item" onclick="nav('integrations')" data-nav="integrations"><span class="material-icons-round">extension</span>Integrations</button>
+  <details class="nav-more" data-nav-more>
+    <summary class="nav-section nav-more-sum"><span>More tools</span><span class="material-icons-round">expand_more</span></summary>
+    <button class="nav-item" onclick="nav('authority')" data-nav="authority"><span class="material-icons-round">groups</span>People who can help</button>
+    <button class="nav-item" onclick="nav('followups')" data-nav="followups"><span class="material-icons-round">event_repeat</span>Follow-ups <span class="nav-count warn" id="nc-fu">0</span></button>
+    <button class="nav-item" onclick="nav('notes')" data-nav="notes"><span class="material-icons-round">sticky_note_2</span>Notes</button>
+    <button class="nav-item" onclick="nav('review')" data-nav="review"><span class="material-icons-round">rate_review</span>Weekly review</button>
+    <button class="nav-item" onclick="nav('goals')" data-nav="goals"><span class="material-icons-round">track_changes</span>Goals</button>
+    <button class="nav-item" onclick="nav('methods')" data-nav="methods"><span class="material-icons-round">menu_book</span>Methods library</button>
+    <button class="nav-item" onclick="nav('guide')" data-nav="guide"><span class="material-icons-round">school</span>Guide</button>
+    <div class="nav-sub">Extra frameworks</div>
+    <button class="nav-item" onclick="nav('frameworks')" data-nav="frameworks"><span class="material-icons-round">science</span>OKR · ToC · OGSM</button>
+    <button class="nav-item" onclick="nav('scorecard')" data-nav="scorecard"><span class="material-icons-round">analytics</span>BSC · SWOT</button>
+    <button class="nav-item" onclick="nav('matrix')" data-nav="matrix"><span class="material-icons-round">grid_view</span>Eisenhower matrix</button>
+    <button class="nav-item" onclick="nav('integrations')" data-nav="integrations"><span class="material-icons-round">extension</span>Export &amp; integrations</button>
+    <button class="nav-item" onclick="toggleTheme()"><span class="material-icons-round" data-theme-icon>dark_mode</span>Light / dark mode</button>
+  </details>
 </nav>
 
 <main class="main">
@@ -1030,6 +1070,22 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
 
 <!-- ════════ DASHBOARD ════════ -->
 <div class="panel active" id="tab-dashboard">
+  <div class="home-simple">
+    <div class="card home-card">
+      <div class="home-h"><span class="material-icons-round">flag</span>Your problem</div>
+      <div id="home-problem"></div>
+    </div>
+    <div class="card home-card">
+      <div class="home-h"><span class="material-icons-round">event</span>Due soon<button class="link-btn" style="margin-left:auto" onclick="nav('tasks')">All tasks</button></div>
+      <div id="home-due"></div>
+    </div>
+    <div class="card home-card">
+      <div class="home-h"><span class="material-icons-round">lightbulb</span>Latest learning<button class="link-btn" style="margin-left:auto" onclick="nav('iterations')">All experiments</button></div>
+      <div id="home-learn"></div>
+    </div>
+  </div>
+  <button class="link-btn home-more" onclick="toggleClassicDash()" id="classic-toggle">Show detailed dashboard</button>
+  <div id="dash-classic" hidden>
 
   <!-- PDIA Journey Progress Bar -->
   <div class="card" style="padding:18px 22px;margin-bottom:14px">
@@ -1178,6 +1234,7 @@ tr:hover .row-actions,.cause-card:hover .row-actions{opacity:1}
   <div class="card">
     <div class="card-title"><span class="material-icons-round ico" style="color:var(--teal)">event_repeat</span>Upcoming Follow-ups & Commitments<span class="card-sub">Next 14 days</span><button class="btn btn-o btn-sm" style="margin-left:auto" onclick="openModal('m-fu')"><span class="material-icons-round">add</span>Schedule</button></div>
     <div id="dash-followups" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px"></div>
+  </div>
   </div>
 </div>
 
@@ -2693,6 +2750,7 @@ window.addEventListener('firebase-ready',async()=>{
   scanNotifications();
   setInterval(scanNotifications,60000);
   renderReminderBtn();applyThemeExtras();
+  try{if(localStorage.getItem('p3_classic_dash')==='1')toggleClassicDash(true);}catch{}
   await checkShareLink();
 });
 
@@ -2913,6 +2971,37 @@ function renderMethods(){
     <div class="m-name">${e(m.name)}${rec.includes(m.id)?'<span class="chip cg">Suits your case</span>':''}</div>
     <div class="m-origin">${e(m.origin)}</div><div class="m-when">${e(m.when)}</div>
     <button class="link-btn" onclick="nav('${m.tab}')">Open</button></div>`).join('')}</div>`).join('');
+}
+
+
+// ═══════════════════════════════════════════════════════
+// SIMPLE HOME
+// ═══════════════════════════════════════════════════════
+function renderHome(){
+  const p=S.problem||{},today=new Date().toISOString().split('T')[0];
+  const hp=document.getElementById('home-problem');
+  if(hp)hp.innerHTML=p.title?`<div class="home-title">${e(p.title)}</div>
+      ${p.current||p.desired?`<div class="home-gap"><div><span>Now</span>${e(p.current||'—')}</div><span class="material-icons-round">arrow_forward</span><div><span>Goal</span>${e(p.desired||'—')}</div></div>`:''}
+      <button class="link-btn" onclick="nav('problem')">Edit</button>`
+    :`<p class="muted">Start by describing the problem in a sentence or two.</p><button class="btn btn-p btn-sm" style="margin-top:8px" onclick="nav('problem')">Describe the problem</button>`;
+  const due=[...S.tasks.filter(t=>t.status!=='done'&&!t.done).map(t=>({id:t.id,title:t.title,date:t.due,kind:'task'})),
+             ...S.followups.filter(f=>!f.done).map(f=>({id:f.id,title:f.title,date:f.date,kind:'followup'}))]
+    .sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999')).slice(0,5);
+  const hd=document.getElementById('home-due');
+  if(hd)hd.innerHTML=due.length?due.map(d=>{const late=d.date&&d.date<today,now=d.date===today;
+      return`<div class="home-row"><button class="task-check" aria-label="Mark done" onclick="${d.kind==='task'?`toggleTask('${d.id}')`:`toggleFu('${d.id}')`};setTimeout(renderHome,300)"></button><span class="home-row-t">${e(d.title)}</span><span class="home-date${late?' late':now?' today':''}">${d.date?(late?'Overdue':now?'Today':d.date):'No date'}</span></div>`;}).join('')
+    :'<p class="muted">Nothing due. Add tasks in Step 7.</p>';
+  const it=[...S.iterations].reverse().find(i=>i.learned||i.did)||S.iterations[S.iterations.length-1];
+  const hl=document.getElementById('home-learn');
+  if(hl)hl.innerHTML=it?`<div class="home-row-t" style="font-weight:600">${e(it.title||'Experiment')}</div><p class="muted" style="margin-top:4px">${e(it.learned||it.hypothesis||'No result written yet.')}</p>`
+    :'<p class="muted">No experiments yet. You will plan one in Step 6.</p>';
+}
+function toggleClassicDash(force){
+  const el=document.getElementById('dash-classic');if(!el)return;
+  const show=force??el.hidden;el.hidden=!show;
+  document.getElementById('classic-toggle').textContent=show?'Hide detailed dashboard':'Show detailed dashboard';
+  try{localStorage.setItem('p3_classic_dash',show?'1':'0');}catch{}
+  if(show){try{radarChart?.resize();}catch{}}
 }
 
 // ═══════════════════════════════════════════════════════
@@ -3390,6 +3479,7 @@ function nextStepIndex(fromId){
 }
 function goNextStep(){const cur=document.querySelector('.panel.active')?.id?.replace('tab-','');nav(STEPS[nextStepIndex(cur)].id);}
 function renderWorkflow(){
+  renderHome();
   const bar=document.getElementById('wf-bar');if(!bar)return;
   const cur=document.querySelector('.panel.active')?.id?.replace('tab-','')||'dashboard';
   const curIdx=STEPS.findIndex(st=>st.id===cur);
@@ -3404,16 +3494,18 @@ function renderWorkflow(){
   const doneCount=STEPS.filter(st=>st.done()).length;
   const ni=nextStepIndex(cur);const next=STEPS[ni];
   const onNext=ni===curIdx;
+  const onHome=cur==='dashboard';
+  bar.classList.toggle('compact',!onHome);
   bar.innerHTML=`
     <div class="wf-top">
       <button class="wf-case" onclick="openCases()" aria-label="Switch case"><span class="material-icons-round">folder_open</span><span class="wf-case-name">${e(currentCase().name||'Untitled case')}</span><span class="material-icons-round" style="font-size:18px">expand_more</span></button>
       <span class="wf-count">${doneCount} of ${STEPS.length-1} steps done${S.cynefin?.domain?' · '+DOMAINS[S.cynefin.domain].name:''}</span>
     </div>
     <ol class="wf-steps">${STEPS.map((st,i)=>`<li><button class="wf-step${st.done()?' done':''}${i===curIdx?' current':''}" onclick="nav('${st.id}')"><span class="wf-num">${st.done()?'✓':i+1}</span><span class="wf-lbl">${st.short}</span></button></li>`).join('')}</ol>
-    <div class="wf-next">
-      <div style="min-width:0;flex:1"><div class="wf-next-t">${onNext?'You are on':'Next step'}: ${stepTitle(ni)}</div><div class="wf-next-s">${next.hint}</div></div>
+    ${onHome||(!onNext&&STEPS[curIdx]?.done())?`<div class="wf-next">
+      <div style="min-width:0;flex:1"><div class="wf-next-t">${onHome?'Next step':'Done here. Next'}: ${stepTitle(ni)}</div><div class="wf-next-s">${next.hint}</div></div>
       ${onNext?'':`<button class="btn btn-p" onclick="nav('${next.id}')">Go<span class="material-icons-round">arrow_forward</span></button>`}
-    </div>`;
+    </div>`:''}`;
 }
 const stepTitle=i=>`Step ${i+1} · ${STEPS[i].label}`;
 
